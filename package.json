@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "cypress": "^15.1.0",
+    "cypress-plugin-xhr-toggle": "^1.2.1",
+    "dotenv": "^17.2.2"
+  }
+}
