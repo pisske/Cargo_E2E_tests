@@ -11,9 +11,7 @@
 //   });
 // });
 
-// cypress/support/commands.js
-
-describe("Airline Login with POM and Session", () => {
+describe("Airline Positive Login", () => {
   beforeEach(() => {
     cy.loginAsAirline(); // ✅ Session-based login
   });

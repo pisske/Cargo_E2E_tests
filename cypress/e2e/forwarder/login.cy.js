@@ -14,7 +14,7 @@
 //     cy.get(".select-trigger", { timeout: 10000 }).should("be.visible");
 //   });
 // });
-describe("Forwarder Login with POM", () => {
+describe("Forwarder positive  Login", () => {
   beforeEach(() => {
     cy.loginAsForwarder(); // Use session-based login command here
   });

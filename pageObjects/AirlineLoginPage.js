@@ -11,15 +11,16 @@ class AirlineLoginPage {
     cy.get("#login-password-input").type(password);
   }
 
-  clickLogin() {
-    cy.get("#login_signin_submit").click();
-  }
-
   login(email, password) {
     this.visit();
     this.fillEmail(email);
     this.fillPassword(password);
-    this.clickLogin();
+  }
+  getErrorMessageEmail() {
+    return cy.get(".error-msg");
+  }
+  getErrorMessagePassword() {
+    return cy.get(".error-msg");
   }
 }
 
