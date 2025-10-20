@@ -1,5 +1,3 @@
-// cypress/pageObjects/ForwarderBookingPage.js
-
 const SELECTORS = {
   originInput: 'input[placeholder="Origin"]',
   destinationInput: 'input[placeholder="Destination"]',
@@ -12,16 +10,19 @@ const SELECTORS = {
   bookNowButotn: "#btn-primary-book",
   bookButton: "#btn-book",
   historyPageInfoButton: 'button[id^="quote-info-"]',
+  datepickerInput: "#flight-card-datepicker",
+  placeOptionButton: "#place-option-btn",
+  closeOptionModal: ".swal2-confirm",
+  confirmOptionButton: ".justify-content-center > .action-option",
+  confirmApiError: ".swal2-confirm",
+  confirmOptionModalButton: ".swal2-confirm",
+  cancelOptionButton: 'button:contains("CANCEL OPTION")',
+  confirmCCancelOptionButton: "button.swal2-confirm.order-2.swal2-styled",
 };
-class ForwarderBookingPage {
+class PageOptionCancelled {
   navigateToNewBooking() {
     cy.visit("/forwarder/search/forwarder-search");
   }
-
-  changeLoadType() {
-    cy.get(".icon-total").click();
-  }
-
   typeDestination(destination) {
     const expectedOrigin = "SIN - Singapore Changi";
 
@@ -41,6 +42,10 @@ class ForwarderBookingPage {
 
     cy.get("body").click(0, 0);
   }
+
+  changeLoadType() {
+    cy.get(".icon-total").click();
+  }
   fillPieceWeightVolume() {
     cy.get(SELECTORS.pieceInput).should("be.visible").clear().type("1");
 
@@ -48,6 +53,22 @@ class ForwarderBookingPage {
 
     cy.get(SELECTORS.volumeInput).should("be.visible").clear().type("1");
   }
+  openCalendar() {
+    cy.get(SELECTORS.datepickerInput).click();
+  }
+  selectDateDaysFromToday(daysAhead = 7) {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + daysAhead);
+
+    const day = targetDate.getDate();
+    const month = targetDate.toLocaleString("default", { month: "long" });
+    const year = targetDate.getFullYear();
+
+    const ariaLabel = `${day} ${month} ${year}`;
+
+    cy.get(`button[aria-label='${ariaLabel}']`).should("be.visible").click();
+  }
+
   clickSearchButton() {
     cy.get(SELECTORS.searchButton).click();
   }
@@ -86,71 +107,54 @@ class ForwarderBookingPage {
       .should("not.be.disabled")
       .click();
   }
+  clickOnThePlaceOptionButton() {
+    cy.get(SELECTORS.placeOptionButton, { timeout: 20000 }).click({
+      force: true,
+    });
+  }
+  closeOptionModal() {
+    cy.get(SELECTORS.closeOptionModal, { timeout: 20000 }).click({
+      force: true,
+    });
+  }
+  apiError() {
+    cy.get(SELECTORS.confirmApiError, { timeout: 20000 }).click({
+      force: true,
+    });
+  }
 
-  clickOnTheBookButton() {
-    cy.get(SELECTORS.bookButton, { timeout: 20000 }).click({ force: true });
+  cancelOption() {
+    cy.get(SELECTORS.cancelOptionButton, { timeout: 20000 })
+      .should("be.visible")
+      .eq(0)
+      .click({ force: true });
   }
-  clickOnTheConfirmationModal() {
-    cy.get(".swal2-popup.booking-confirmed", { timeout: 10000 }).should(
-      "be.visible"
-    );
-    cy.get(".swal2-confirm").click();
+  confrimCancelledOption() {
+    cy.get(SELECTORS.confirmCCancelOptionButton, { timeout: 20000 }).click({
+      force: true,
+    });
   }
-  ClickInfoButtonHistoryPage() {
-    cy.get(SELECTORS.historyPageInfoButton, { timeout: 10000 })
-      .first()
-      .invoke("attr", "id")
-      .then((buttonId) => {
-        const bookingId = buttonId.replace("quote-info-", "");
-        const url = `/shipment-details/${bookingId}`;
-
-        cy.visit(url);
-      });
-  }
-  verifyShipmentStatus() {
-    const expectedStatuses = [
-      "BOOKING CONFIRMED", // First check: Booking Confirmed
-      "IN TRANSIT", // Second check: In Transit
-      "AT DESTINATION", // Third check: At Destination
-      "DELIVERED", // Last check: Delivered
-    ];
+  verifyCancelledStatus() {
+    const expectedStatus = "OPTION CANCELLED";
 
     const normalizeText = (text) =>
       text.replace(/\s+/g, " ").trim().toUpperCase();
 
-    expectedStatuses.forEach((expectedStatus, index) => {
-      cy.log(`⏳ Waiting for status: ${expectedStatus}`);
+    cy.log(`⏳ Waiting for status: ${expectedStatus}`);
 
-      // Increase the timeout for the first status check (Booking Confirmed to In Transit)
-      let statusTimeout = 90000; // 90 seconds for the first transition (Booking Confirmed → In Transit)
+    // Updated the locator to use the `.description` class
+    cy.get(".description", { timeout: 60000 })
+      .should("be.visible")
+      .scrollIntoView({ force: true })
+      .invoke("text")
+      .then((text) => {
+        const actual = normalizeText(text);
+        const expected = normalizeText(expectedStatus);
 
-      if (expectedStatus !== "BOOKING CONFIRMED") {
-        statusTimeout = 60000; // 60 seconds for other transitions (In Transit → At Destination → Delivered)
-      }
-
-      // Wait for the status to appear with the appropriate timeout
-      cy.get("span[placement='bottom'] span.text-uppercase", {
-        timeout: statusTimeout,
-      })
-        .should("be.visible")
-        .scrollIntoView({ force: true })
-        .invoke("text")
-        .should("match", new RegExp(expectedStatus, "i")) // Ensure it matches the expected status
-        .then((text) => {
-          const actual = normalizeText(text);
-          const expected = normalizeText(expectedStatus);
-
-          // Assert that the status matches
-          expect(actual).to.eq(expected);
-          cy.log(`✅ Status matched: ${actual}`);
-        });
-
-      // Optional: Add a wait time before checking the next status (for transitions to occur)
-      if (index < expectedStatuses.length - 1) {
-        // Avoid waiting after the last status
-        cy.wait(90000); // Wait for 90 seconds (adjust based on your transition time)
-      }
-    });
+        expect(actual).to.eq(expected);
+        cy.log(`✅ Status matched: ${actual}`);
+      });
   }
 }
-export default new ForwarderBookingPage();
+
+export default new PageOptionCancelled();

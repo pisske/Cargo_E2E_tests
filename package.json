@@ -1,8 +1,9 @@
 {
   "devDependencies": {
     "@testing-library/cypress": "^10.1.0",
-    "cypress": "^15.1.0",
+    "cypress": "^15.4.0",
     "cypress-plugin-xhr-toggle": "^1.2.1",
+    "cypress-xpath": "^2.0.1",
     "dotenv": "^17.2.2"
   }
 }

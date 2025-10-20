@@ -16,6 +16,15 @@ class ForwarderLoginPage {
     this.fillEmail(email);
     this.fillPassword(password);
   }
+  logout() {
+    // Click profile picture dropdown
+    cy.get(
+      '.dropdown-toggle.kt-header__topbar-wrapper img[alt="profile picture"]'
+    ).click();
+
+    // Click first logout button
+    cy.get("button.btn.btn-sign-out").first().click();
+  }
   getErrorMessageEmail() {
     return cy.get(".error-msg");
   }

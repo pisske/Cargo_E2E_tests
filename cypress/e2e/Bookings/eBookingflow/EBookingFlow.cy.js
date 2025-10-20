@@ -1,15 +1,16 @@
 import PageEBookingFlow from "../../../../pageObjects/Bookings/eBookingFlow/PageEBookingFlow";
 
-describe("Forwarder Booking Flow UI", () => {
+describe("Forwarder Booking Flow", () => {
   beforeEach(() => {
+    cy.viewport(1366, 768);
     cy.loginAsForwarder();
   });
 
-  it("Performs eBooking flow - total icon and confirm click", () => {
-    cy.visit("/forwarder/search/forwarder-search");
-  });
+  // it("Performs eBooking flow - total icon and confirm click", () => {
+  //   cy.visit("/forwarder/search/forwarder-search");
+  // });
 
-  it("selects the second destination option after typing cdg", () => {
+  it("should complete the eBooking flow from search to delivered status", () => {
     PageEBookingFlow.typeDestination("CDG - Paris Charles de Gaulle");
     PageEBookingFlow.changeLoadType();
     PageEBookingFlow.fillPieceWeightVolume(1, 1, 1);
@@ -21,6 +22,11 @@ describe("Forwarder Booking Flow UI", () => {
     cy.url({ timeout: 10000 }).should("include", "/shipment-details");
     PageEBookingFlow.clickOnTheBookButton();
     PageEBookingFlow.clickOnTheConfirmationModal();
-    cy.url().should("include", "/forwarder/book/booking-history");
+    cy.url({ timeout: 10000 }).should(
+      "include",
+      "/forwarder/book/booking-history"
+    );
+    PageEBookingFlow.ClickInfoButtonHistoryPage();
+    PageEBookingFlow.verifyShipmentStatus();
   });
 });

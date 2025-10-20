@@ -1,5 +1,3 @@
-// cypress/pageObjects/ForwarderBookingPage.js
-
 const SELECTORS = {
   originInput: 'input[placeholder="Origin"]',
   destinationInput: 'input[placeholder="Destination"]',
@@ -12,8 +10,12 @@ const SELECTORS = {
   bookNowButotn: "#btn-primary-book",
   bookButton: "#btn-book",
   historyPageInfoButton: 'button[id^="quote-info-"]',
+  cancelButton: "#cancel-booking",
+  cancelReason: "#reason-no-show-late-delivery",
+  confirmCancelReason: "#cancellation-reason-confirm-btn",
+  swalCancelBookingButton: "button.swal2-confirm.btn.btn-danger",
 };
-class ForwarderBookingPage {
+class ForwarderBookingPage_Cancelled {
   navigateToNewBooking() {
     cy.visit("/forwarder/search/forwarder-search");
   }
@@ -86,7 +88,6 @@ class ForwarderBookingPage {
       .should("not.be.disabled")
       .click();
   }
-
   clickOnTheBookButton() {
     cy.get(SELECTORS.bookButton, { timeout: 20000 }).click({ force: true });
   }
@@ -107,50 +108,42 @@ class ForwarderBookingPage {
         cy.visit(url);
       });
   }
-  verifyShipmentStatus() {
-    const expectedStatuses = [
-      "BOOKING CONFIRMED", // First check: Booking Confirmed
-      "IN TRANSIT", // Second check: In Transit
-      "AT DESTINATION", // Third check: At Destination
-      "DELIVERED", // Last check: Delivered
-    ];
+  clickOnTheCacnelButton() {
+    cy.get(SELECTORS.cancelButton, { timeout: 20000 }).click({ force: true });
+  }
+
+  clickCancelReason() {
+    cy.get(SELECTORS.cancelReason, { timeout: 20000 }).click({ force: true });
+  }
+  confirmCanceReason() {
+    cy.get(SELECTORS.confirmCancelReason, { timeout: 20000 }).click({
+      force: true,
+    });
+  }
+  cancelModalClick() {
+    cy.get(SELECTORS.swalCancelBookingButton, { timeout: 20000 }).click({
+      force: true,
+    });
+  }
+  verifyCancelledStatus() {
+    const expectedStatus = "OPTION CANCELLED";
 
     const normalizeText = (text) =>
       text.replace(/\s+/g, " ").trim().toUpperCase();
 
-    expectedStatuses.forEach((expectedStatus, index) => {
-      cy.log(`⏳ Waiting for status: ${expectedStatus}`);
+    cy.log(`⏳ Waiting for status: ${expectedStatus}`);
 
-      // Increase the timeout for the first status check (Booking Confirmed to In Transit)
-      let statusTimeout = 90000; // 90 seconds for the first transition (Booking Confirmed → In Transit)
+    cy.get("span[placement='bottom'] span.text-uppercase", { timeout: 60000 })
+      .should("be.visible")
+      .scrollIntoView({ force: true })
+      .invoke("text")
+      .then((text) => {
+        const actual = normalizeText(text);
+        const expected = normalizeText(expectedStatus);
 
-      if (expectedStatus !== "BOOKING CONFIRMED") {
-        statusTimeout = 60000; // 60 seconds for other transitions (In Transit → At Destination → Delivered)
-      }
-
-      // Wait for the status to appear with the appropriate timeout
-      cy.get("span[placement='bottom'] span.text-uppercase", {
-        timeout: statusTimeout,
-      })
-        .should("be.visible")
-        .scrollIntoView({ force: true })
-        .invoke("text")
-        .should("match", new RegExp(expectedStatus, "i")) // Ensure it matches the expected status
-        .then((text) => {
-          const actual = normalizeText(text);
-          const expected = normalizeText(expectedStatus);
-
-          // Assert that the status matches
-          expect(actual).to.eq(expected);
-          cy.log(`✅ Status matched: ${actual}`);
-        });
-
-      // Optional: Add a wait time before checking the next status (for transitions to occur)
-      if (index < expectedStatuses.length - 1) {
-        // Avoid waiting after the last status
-        cy.wait(90000); // Wait for 90 seconds (adjust based on your transition time)
-      }
-    });
+        expect(actual).to.eq(expected);
+        cy.log(`✅ Status matched: ${actual}`);
+      });
   }
 }
-export default new ForwarderBookingPage();
+export default new ForwarderBookingPage_Cancelled();

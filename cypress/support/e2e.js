@@ -17,3 +17,4 @@
 import "./commands";
 import "cypress-plugin-xhr-toggle";
 import "@testing-library/cypress/add-commands";
+import "cypress-xpath";

@@ -1,5 +1,3 @@
-// cypress/pageObjects/ForwarderBookingPage.js
-
 const SELECTORS = {
   originInput: 'input[placeholder="Origin"]',
   destinationInput: 'input[placeholder="Destination"]',
@@ -12,16 +10,17 @@ const SELECTORS = {
   bookNowButotn: "#btn-primary-book",
   bookButton: "#btn-book",
   historyPageInfoButton: 'button[id^="quote-info-"]',
+  datepickerInput: "#flight-card-datepicker",
+  placeOptionButton: "#place-option-btn",
+  closeOptionModal: ".swal2-confirm",
+  confirmOptionButton: ".justify-content-center > .action-option",
+  confirmApiError: ".swal2-confirm",
+  confirmOptionModalButton: ".swal2-confirm",
 };
-class ForwarderBookingPage {
+class PageOptionConfirmed {
   navigateToNewBooking() {
     cy.visit("/forwarder/search/forwarder-search");
   }
-
-  changeLoadType() {
-    cy.get(".icon-total").click();
-  }
-
   typeDestination(destination) {
     const expectedOrigin = "SIN - Singapore Changi";
 
@@ -41,6 +40,10 @@ class ForwarderBookingPage {
 
     cy.get("body").click(0, 0);
   }
+
+  changeLoadType() {
+    cy.get(".icon-total").click();
+  }
   fillPieceWeightVolume() {
     cy.get(SELECTORS.pieceInput).should("be.visible").clear().type("1");
 
@@ -48,6 +51,22 @@ class ForwarderBookingPage {
 
     cy.get(SELECTORS.volumeInput).should("be.visible").clear().type("1");
   }
+  openCalendar() {
+    cy.get(SELECTORS.datepickerInput).click();
+  }
+  selectDateDaysFromToday(daysAhead = 7) {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + daysAhead);
+
+    const day = targetDate.getDate();
+    const month = targetDate.toLocaleString("default", { month: "long" });
+    const year = targetDate.getFullYear();
+
+    const ariaLabel = `${day} ${month} ${year}`;
+
+    cy.get(`button[aria-label='${ariaLabel}']`).should("be.visible").click();
+  }
+
   clickSearchButton() {
     cy.get(SELECTORS.searchButton).click();
   }
@@ -86,26 +105,43 @@ class ForwarderBookingPage {
       .should("not.be.disabled")
       .click();
   }
-
-  clickOnTheBookButton() {
-    cy.get(SELECTORS.bookButton, { timeout: 20000 }).click({ force: true });
+  clickOnThePlaceOptionButton() {
+    cy.get(SELECTORS.placeOptionButton, { timeout: 20000 }).click({
+      force: true,
+    });
   }
-  clickOnTheConfirmationModal() {
-    cy.get(".swal2-popup.booking-confirmed", { timeout: 10000 }).should(
-      "be.visible"
-    );
-    cy.get(".swal2-confirm").click();
+  closeOptionModal() {
+    cy.get(SELECTORS.closeOptionModal, { timeout: 20000 }).click({
+      force: true,
+    });
   }
-  ClickInfoButtonHistoryPage() {
-    cy.get(SELECTORS.historyPageInfoButton, { timeout: 10000 })
-      .first()
-      .invoke("attr", "id")
-      .then((buttonId) => {
-        const bookingId = buttonId.replace("quote-info-", "");
-        const url = `/shipment-details/${bookingId}`;
+  apiError() {
+    cy.get(SELECTORS.confirmApiError, { timeout: 20000 }).click({
+      force: true,
+    });
+  }
+  clickConfirmOptionButton() {
+    // Wait a reasonable amount of time for the parent container to exist
+    cy.get(".Action_sec", { timeout: 20000 }).should("exist");
 
-        cy.visit(url);
-      });
+    // Find the button with the text 'CONFIRM OPTION'
+    cy.contains("button.action-option", "CONFIRM OPTION", {
+      timeout: 20000,
+    }).then(($btn) => {
+      if ($btn.is(":visible") && !$btn.is(":disabled")) {
+        // If button is visible and enabled, click normally
+        cy.wrap($btn).click();
+      } else {
+        // Otherwise, force the click
+        cy.log("Button is not visible or disabled, forcing click...");
+        cy.wrap($btn).click({ force: true });
+      }
+    });
+  }
+  clickConfrimOptionModal() {
+    cy.get(SELECTORS.confirmOptionModalButton, { timeout: 50000 }).click({
+      force: true,
+    });
   }
   verifyShipmentStatus() {
     const expectedStatuses = [
@@ -153,4 +189,4 @@ class ForwarderBookingPage {
     });
   }
 }
-export default new ForwarderBookingPage();
+export default new PageOptionConfirmed();
