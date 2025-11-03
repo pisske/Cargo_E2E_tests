@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:03:40.364Z",
+    "end": "2025-11-03T10:09:33.131Z",
+    "duration": 352767,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "ba8bf3d8-f723-4125-b8fe-ddaed28efab4",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\OptionFlow\\OptionConfirmed.js",
+      "file": "cypress\\e2e\\Bookings\\OptionFlow\\OptionConfirmed.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "82998473-df11-4df2-9b09-64222773034e",
+          "title": "Forwarder Booking Flow",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should complete the Option Confrimed flow from search to delivered status",
+              "fullTitle": "Forwarder Booking Flow should complete the Option Confrimed flow from search to delivered status",
+              "timedOut": null,
+              "duration": 352472,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_PageEBookingFlow.default.selectTheSINoffice();\n_PageOptionConfirmed.default.typeDestination(\"CDG - Paris Charles de Gaulle\");\n_PageOptionConfirmed.default.changeLoadType();\n_PageOptionConfirmed.default.fillPieceWeightVolume(1, 1, 1);\n_PageOptionConfirmed.default.openCalendar();\n_PageOptionConfirmed.default.selectDateDaysFromToday(7);\n_PageOptionConfirmed.default.clickSearchButton();\ncy.url({\n  timeout: 20000\n}).should(\"include\", \"/forwarder/search/search-result\");\n// cy.url().should(\"include\", \"/forwarder/search/search-result\");\n_PageOptionConfirmed.default.closeRandomModalsIfPresent();\n_PageOptionConfirmed.default.clickBookNowForCargoAirline();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/shipment-details\");\n_PageOptionConfirmed.default.clickOnThePlaceOptionButton();\n_PageOptionConfirmed.default.closeOptionModal();\n// PageOptionConfirmed.apiError();\n_PageOptionConfirmed.default.clickConfirmOptionButton();\n_PageOptionConfirmed.default.clickConfrimOptionModal();\n_PageOptionConfirmed.default.verifyShipmentStatus();",
+              "err": {},
+              "uuid": "6cac78e0-62e6-425b-87cf-abceddb7446c",
+              "parentUUID": "82998473-df11-4df2-9b09-64222773034e",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "6cac78e0-62e6-425b-87cf-abceddb7446c"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 352472,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

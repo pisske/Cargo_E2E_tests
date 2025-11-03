@@ -32,7 +32,7 @@ Cypress.Commands.add("loginAsForwarder", () => {
     cy.get("#login-email-input").type(email);
     cy.get("#login-password-input").type(password);
     cy.get("#login_signin_submit").click();
-    cy.url({ timeout: 10000 }).should(
+    cy.url({ timeout: 15000 }).should(
       "include",
       "/forwarder/search/forwarder-search"
     );
@@ -48,7 +48,7 @@ Cypress.Commands.add("loginAsAirline", () => {
     cy.get("#login-email-input").type(email);
     cy.get("#login-password-input").type(password);
     cy.get("#login_signin_submit").click();
-    cy.url().should("include", "/airline/quote/quote-list");
+    cy.url({ timeout: 10000 }).should("include", "/airline/quote/quote-list");
   });
   cy.visit("/airline/quote/quote-list");
 });

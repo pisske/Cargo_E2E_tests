@@ -1,12 +1,27 @@
 const { defineConfig } = require("cypress");
 require("dotenv").config();
+const allureWriter = require("@shelex/cypress-allure-plugin/writer");
 
 module.exports = defineConfig({
   e2e: {
     baseUrl: "https://app.dev.cargoai.co/",
     specPattern: "cypress/e2e/**/*.js",
+    viewportWidth: 1280,
+    // Example optional settings you can safely add here:
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    reporter: "mochawesome",
+    reporterOptions: {
+      reportDir: "cypress/reports",
+      overwrite: true,
+      html: true,
+      json: true,
+    },
+
     setupNodeEvents(on, config) {
       // implement node event listeners here
+      allureWriter(on, config);
+      return config;
     },
     env: {
       FORWARDER_EMAIL: process.env.FORWARDER_EMAIL,

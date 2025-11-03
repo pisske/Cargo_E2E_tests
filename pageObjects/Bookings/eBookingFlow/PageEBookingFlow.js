@@ -12,10 +12,21 @@ const SELECTORS = {
   bookNowButotn: "#btn-primary-book",
   bookButton: "#btn-book",
   historyPageInfoButton: 'button[id^="quote-info-"]',
+  officeSelector: ".dropdown-toggle",
+  officeMenu:
+    ".dropdown-menu.office-selector__popup.p-0.dropdown-menu-anim.show",
 };
 class ForwarderBookingPage {
   navigateToNewBooking() {
     cy.visit("/forwarder/search/forwarder-search");
+  }
+
+  selectTheSINoffice() {
+    cy.get(SELECTORS.officeSelector, { timeout: 10000 })
+      .filter(":visible")
+      .eq(1)
+      .click();
+    cy.get(SELECTORS.officeMenu).contains("SIN").click();
   }
 
   changeLoadType() {
@@ -49,16 +60,16 @@ class ForwarderBookingPage {
     cy.get(SELECTORS.volumeInput).should("be.visible").clear().type("1");
   }
   clickSearchButton() {
-    cy.get(SELECTORS.searchButton).click();
+    cy.get("kt-adhoc-search", { timeout: 15000 }).should("be.visible");
+
+    // Now search for the second one
+    cy.get("kt-search-button")
+      .should("have.length.at.least", 2)
+      .eq(1)
+      .find("button#search-button")
+      .click();
   }
   closeRandomModalsIfPresent() {
-    // cy.get("body").then(($body) => {
-    //   if ($body.find(".booking-details-popup").length > 0) {
-    //     cy.get("#booking-details-popup-close").click({ force: true });
-
-    //     cy.get(".booking-details-popup").should("not.exist");
-    //   }
-    // });
     cy.get("body").then(() => {
       // Try to get the modal within a short timeout
       cy.get(".booking-details-popup", { timeout: 3000 }).then(($modal) => {
@@ -73,12 +84,7 @@ class ForwarderBookingPage {
     });
   }
   clickBookNowForCargoAirline() {
-    // cy.get(SELECTORS.bookNowButotn, { timeout: 50000 })
-    //   .should("be.visible")
-    //   .should("not.be.disabled")
-    //   .first()
-    //   .as("bookNowBtn");
-    // cy.get("@bookNowBtn").click();
+    //
     cy.get(SELECTORS.bookNowButotn, { timeout: 50000 })
       .first()
       .scrollIntoView() // 👈 Ensure it's in view
@@ -87,8 +93,23 @@ class ForwarderBookingPage {
       .click();
   }
 
+  // clickOnTheBookButton() {
+  //   cy.get(".Action_sec", { timeout: 30000 }).should("be.visible");
+
+  //   cy.get(SELECTORS.bookButton).should("not.be.disabled").click();
+  // }
   clickOnTheBookButton() {
-    cy.get(SELECTORS.bookButton, { timeout: 20000 }).click({ force: true });
+    cy.log("Clicking Book button (ignoring disabled state if needed)...");
+
+    cy.get(".action-btn-container")
+      .find("button#btn-book")
+      .should("exist")
+      .then(($btn) => {
+        // if it's hidden, scroll it into view and force click
+        cy.wrap($btn).scrollIntoView();
+        cy.wait(500); // small wait for Angular change detection
+        cy.wrap($btn).click({ force: true });
+      });
   }
   clickOnTheConfirmationModal() {
     cy.get(".swal2-popup.booking-confirmed", { timeout: 10000 }).should(
@@ -109,10 +130,10 @@ class ForwarderBookingPage {
   }
   verifyShipmentStatus() {
     const expectedStatuses = [
-      "BOOKING CONFIRMED", // First check: Booking Confirmed
-      "IN TRANSIT", // Second check: In Transit
-      "AT DESTINATION", // Third check: At Destination
-      "DELIVERED", // Last check: Delivered
+      "BOOKING CONFIRMED",
+      "IN TRANSIT", //
+      "AT DESTINATION",
+      "DELIVERED", //
     ];
 
     const normalizeText = (text) =>

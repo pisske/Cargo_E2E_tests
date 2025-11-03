@@ -1,0 +1,181 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:09:37.263Z",
+    "end": "2025-11-03T10:13:20.375Z",
+    "duration": 223112,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "64d4511c-8158-4399-a1a9-219fd4e3dc2e",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\QuoteRequestFlow\\QuoteRequest_Accpeted.js",
+      "file": "cypress\\e2e\\Bookings\\QuoteRequestFlow\\QuoteRequest_Accpeted.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "7c5d60ec-277e-49cd-adac-80a6f1cb13e4",
+          "title": "Forwarder Quote Request Flow",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Forwarder request a quote and verified quote requested status",
+              "fullTitle": "Forwarder Quote Request Flow Forwarder request a quote and verified quote requested status",
+              "timedOut": null,
+              "duration": 98080,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_PageEBookingFlow.default.selectTheSINoffice();\n_PageQuoteRequest_Accepted.default.typeDestination(\"CDG - Paris Charles de Gaulle\");\n_PageQuoteRequest_Accepted.default.changeLoadType();\n_PageQuoteRequest_Accepted.default.fillPieceWeightVolume(1, 1, 1);\n_PageQuoteRequest_Accepted.default.clickSearchButton();\ncy.url({\n  timeout: 20000\n}).should(\"include\", \"/forwarder/search/search-result\");\n_PageQuoteRequest_Accepted.default.closeRandomModalsIfPresent();\n_PageQuoteRequest_Accepted.default.tickCheckboxBookNowForCargoAirline();\n_PageQuoteRequest_Accepted.default.clickQuoteReqeustButton();\n_PageQuoteRequest_Accepted.default.typeRateForQuote();\n_PageQuoteRequest_Accepted.default.clickSubmitQuoteButton();\n_PageQuoteRequest_Accepted.default.clickFirstExpansionIndicator();\n_PageQuoteRequest_Accepted.default.clickOnTheQuoteInfoButton();\n_PageQuoteRequest_Accepted.default.verifyQuoteRequestedStatus();\ncy.intercept(\"GET\", \"/aircrafts\", {\n  statusCode: 200,\n  body: []\n}).as(\"mockAircrafts\");\n_ForwarderLoginPage.default.logout();",
+              "err": {},
+              "uuid": "6a085d34-0499-49e8-aac7-8059fcc1aff9",
+              "parentUUID": "7c5d60ec-277e-49cd-adac-80a6f1cb13e4",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Arine accept the quote",
+              "fullTitle": "Forwarder Quote Request Flow Arine accept the quote",
+              "timedOut": null,
+              "duration": 28435,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsAirline();\n_RequestBooking_Confirmed.default.clickAirlineInfoButton();\n_PageQuoteRequest_Accepted.default.acceptTheQuoteAndVerifyStatus();\n_AirlineLoginPage.default.logout();",
+              "err": {},
+              "uuid": "7bcc7524-2e63-4d09-bd71-7aeaf16be18c",
+              "parentUUID": "7c5d60ec-277e-49cd-adac-80a6f1cb13e4",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forwarder requests a booking",
+              "fullTitle": "Forwarder Quote Request Flow Forwarder requests a booking",
+              "timedOut": null,
+              "duration": 14085,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder();\n_PageQuoteRequest_Accepted.default.clickOnTheQuotePage();\n_PageQuoteRequest_Accepted.default.clickFirstExpansionIndicator();\n_PageQuoteRequest_Accepted.default.clickOnTheQuoteInfoButton();\ncy.url({\n  timeout: 20000\n}).should(\"include\", \"/shipment-details\");\n_PageQuoteRequest_Accepted.default.clickOnTheBookButton();\n_ForwarderLoginPage.default.logout();",
+              "err": {},
+              "uuid": "0b824cf0-f087-4f37-bbe2-681b3b417c6c",
+              "parentUUID": "7c5d60ec-277e-49cd-adac-80a6f1cb13e4",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Airline edits AWB and confirms booking",
+              "fullTitle": "Forwarder Quote Request Flow Airline edits AWB and confirms booking",
+              "timedOut": null,
+              "duration": 59609,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsAirline(); // login as airline\ncy.intercept(\"GET\", /\\/quotes\\/\\d+\\/subscribers/, {\n  statusCode: 200,\n  body: [] // you can mock subscribers if needed\n}).as(\"mockSubscribers\");\n_RequestBooking_Confirmed.default.clickAirlineInfoButton();\n_RequestBooking_Confirmed.default.clckEditAWBnumber();\n_RequestBooking_Confirmed.default.fillValidAWB();\n_RequestBooking_Confirmed.default.saveAWBnumber();\n_RequestBooking_Confirmed.default.confirmBookingAndVerifyStatus();\n_RequestBooking_Confirmed.default.moveAndVerifyInTransitStatus();\n_RequestBooking_Confirmed.default.moveAndVerifyAtDestinationStatus();\n_RequestBooking_Confirmed.default.moveAndVerifyDeliveredStatus();\ncy.intercept(\"GET\", \"/aircrafts\", {\n  statusCode: 200,\n  body: []\n}).as(\"mockAircrafts\");\ncy.intercept(/\\/quotes\\/\\d+\\/subscribers/, {\n  statusCode: 200,\n  body: []\n}).as(\"mockSubscribers\");\n_AirlineLoginPage.default.logout(); // optional logout",
+              "err": {},
+              "uuid": "1b45cb48-8d94-4e5f-9151-dd49a0af1f47",
+              "parentUUID": "7c5d60ec-277e-49cd-adac-80a6f1cb13e4",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forearder verified delivered status",
+              "fullTitle": "Forwarder Quote Request Flow Forearder verified delivered status",
+              "timedOut": null,
+              "duration": 21409,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder(); // login again as forwarder\n_RequestBooking_Confirmed.default.confirmtSatusDeliveredsForwarder();",
+              "err": {},
+              "uuid": "700d9361-2fc3-4d0c-9dab-91bf30ab82e4",
+              "parentUUID": "7c5d60ec-277e-49cd-adac-80a6f1cb13e4",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "6a085d34-0499-49e8-aac7-8059fcc1aff9",
+            "7bcc7524-2e63-4d09-bd71-7aeaf16be18c",
+            "0b824cf0-f087-4f37-bbe2-681b3b417c6c",
+            "1b45cb48-8d94-4e5f-9151-dd49a0af1f47",
+            "700d9361-2fc3-4d0c-9dab-91bf30ab82e4"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 221618,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

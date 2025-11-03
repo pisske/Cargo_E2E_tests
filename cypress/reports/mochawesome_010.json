@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:22:18.096Z",
+    "end": "2025-11-03T10:24:21.718Z",
+    "duration": 123622,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "4b4f3ef6-f7a4-4549-8d95-6d556b7fb61e",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\ReqeustBooking\\RequestBooking_Reject.js",
+      "file": "cypress\\e2e\\Bookings\\ReqeustBooking\\RequestBooking_Reject.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "17f4dc98-2ade-4f9b-88ec-b151f5e15b92",
+          "title": "Forwarder and Airline Request Booking Flow - Reject",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Forwarder creates a booking request",
+              "fullTitle": "Forwarder and Airline Request Booking Flow - Reject Forwarder creates a booking request",
+              "timedOut": null,
+              "duration": 79246,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder();\n_RequestBooking_Confirmed.default.selectTheCDGoffice();\n_RequestBooking_Confirmed.default.typeDestination(\"SIN - Singapore Changi\");\n_ReqeusestBooking_Rejected.default.changeLoadType();\n_ReqeusestBooking_Rejected.default.fillPieceWeightVolume(1, 1, 1);\n_ReqeusestBooking_Rejected.default.clickSearchButton();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/forwarder/search/search-result\");\n_ReqeusestBooking_Rejected.default.closeRandomModalsIfPresent();\n_ReqeusestBooking_Rejected.default.extendFlightDetails();\n_ReqeusestBooking_Rejected.default.submitRequsetBooking();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/shipment-details/new\");\n_ReqeusestBooking_Rejected.default.RequsetBooking();\n_ReqeusestBooking_Rejected.default.confirmationRequestBooking();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/forwarder/book/booking-history\");\n_ReqeusestBooking_Rejected.default.ClickInfoButtonHistoryPage();\n_ForwarderLoginPage.default.logout();",
+              "err": {},
+              "uuid": "d1f1cdb7-bace-4db0-960d-dba84055ea37",
+              "parentUUID": "17f4dc98-2ade-4f9b-88ec-b151f5e15b92",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Airline rejects the booking request",
+              "fullTitle": "Forwarder and Airline Request Booking Flow - Reject Airline rejects the booking request",
+              "timedOut": null,
+              "duration": 29865,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsAirline();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/airline/quote/quote-list\");\ncy.intercept(\"GET\", /\\/quotes\\/\\d+\\/subscribers/, {\n  statusCode: 200,\n  body: []\n}).as(\"subscribers\");\n_ReqeusestBooking_Rejected.default.clickAirlineInfoButton();\n_ReqeusestBooking_Rejected.default.verifyBookingRequestedStatus();\n_ReqeusestBooking_Rejected.default.clickOnTheRejectButton();\n_ReqeusestBooking_Rejected.default.clickRejectReason();\n_ReqeusestBooking_Rejected.default.confirmRejectReason();\n_ReqeusestBooking_Rejected.default.confirmRejectModal();\n_ReqeusestBooking_Rejected.default.verifyBookingRejectedStatus();\n_AirlineLoginPage.default.logout();",
+              "err": {},
+              "uuid": "8b89bf65-26cd-477d-9cee-461f8eab7d3e",
+              "parentUUID": "17f4dc98-2ade-4f9b-88ec-b151f5e15b92",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forwarder verifies booking is rejected",
+              "fullTitle": "Forwarder and Airline Request Booking Flow - Reject Forwarder verifies booking is rejected",
+              "timedOut": null,
+              "duration": 13579,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder();\n_ReqeusestBooking_Rejected.default.clickOnTheshipmentsPage();\n_ReqeusestBooking_Rejected.default.ClickInfoButtonHistoryPage();\n_ReqeusestBooking_Rejected.default.verifyBookingRejectedStatus();",
+              "err": {},
+              "uuid": "476af6a1-df64-4c4b-9481-80b63e8cef86",
+              "parentUUID": "17f4dc98-2ade-4f9b-88ec-b151f5e15b92",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d1f1cdb7-bace-4db0-960d-dba84055ea37",
+            "8b89bf65-26cd-477d-9cee-461f8eab7d3e",
+            "476af6a1-df64-4c4b-9481-80b63e8cef86"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 122690,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

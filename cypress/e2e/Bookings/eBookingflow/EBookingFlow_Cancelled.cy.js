@@ -1,3 +1,4 @@
+import PageEBookingFlow from "../../../../pageObjects/Bookings/eBookingFlow/PageEBookingFlow";
 import PageEBookingFlow_Cancelled from "../../../../pageObjects/Bookings/eBookingFlow/PageEBookingFlow_Cancelled";
 
 describe("Forwarder Booking Flow Status Canceled", () => {
@@ -7,6 +8,7 @@ describe("Forwarder Booking Flow Status Canceled", () => {
   });
 
   it("should verified canceled status", () => {
+    PageEBookingFlow.selectTheSINoffice();
     PageEBookingFlow_Cancelled.typeDestination("CDG - Paris Charles de Gaulle");
     PageEBookingFlow_Cancelled.changeLoadType();
     PageEBookingFlow_Cancelled.fillPieceWeightVolume(1, 1, 1);

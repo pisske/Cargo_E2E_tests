@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2025-11-03T10:24:24.079Z",
+    "end": "2025-11-03T10:28:36.121Z",
+    "duration": 252042,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "c0d133b2-9fc5-4f0d-b7fd-c7048ecc35cf",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\eBookingflow\\EBookingFlow.cy.js",
+      "file": "cypress\\e2e\\Bookings\\eBookingflow\\EBookingFlow.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "9abc9550-95b3-4fbb-b608-cb35c1b7444a",
+          "title": "Forwarder Booking Flow",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should complete the eBooking flow from search to delivered status",
+              "fullTitle": "Forwarder Booking Flow should complete the eBooking flow from search to delivered status",
+              "timedOut": null,
+              "duration": 251891,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "_PageEBookingFlow.default.selectTheSINoffice();\n_PageEBookingFlow.default.typeDestination(\"CDG - Paris Charles de Gaulle\");\n_PageEBookingFlow.default.changeLoadType();\n_PageEBookingFlow.default.fillPieceWeightVolume(1, 1, 1);\n_PageEBookingFlow.default.clickSearchButton();\ncy.url().should(\"include\", \"/forwarder/search/search-result\");\n_PageEBookingFlow.default.closeRandomModalsIfPresent();\n_PageEBookingFlow.default.clickBookNowForCargoAirline();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/shipment-details\");\n_PageEBookingFlow.default.clickOnTheBookButton();\n_PageEBookingFlow.default.clickOnTheConfirmationModal();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/forwarder/book/booking-history\");\n_PageEBookingFlow.default.ClickInfoButtonHistoryPage();\n_PageEBookingFlow.default.verifyShipmentStatus();",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: expected 'IN TRANSIT' to match /AT DESTINATION/i",
+                "estack": "AssertionError: Timed out retrying after 4000ms: expected 'IN TRANSIT' to match /AT DESTINATION/i\n    at eval (webpack:///./pageObjects/Bookings/eBookingFlow/PageEBookingFlow.js:159:9)\nat Array.forEach (<anonymous>)\n    at ForwarderBookingPage.verifyShipmentStatus (webpack:///./pageObjects/Bookings/eBookingFlow/PageEBookingFlow.js:142:21)\n    at Context.eval (webpack:///./cypress/e2e/Bookings/eBookingflow/EBookingFlow.cy.js:31:21)",
+                "diff": null
+              },
+              "uuid": "cb1573ef-ded3-4a8b-a714-769321dff71c",
+              "parentUUID": "9abc9550-95b3-4fbb-b608-cb35c1b7444a",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "cb1573ef-ded3-4a8b-a714-769321dff71c"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 251891,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

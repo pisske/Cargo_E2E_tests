@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:02:16.611Z",
+    "end": "2025-11-03T10:02:26.358Z",
+    "duration": 9747,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "a14d2359-2ed2-4239-be11-5815dc3e2ea6",
+      "title": "",
+      "fullFile": "cypress\\e2e\\forwarder\\negative_login_forwarder.js",
+      "file": "cypress\\e2e\\forwarder\\negative_login_forwarder.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "21d94ac2-bef4-48f0-a530-f2ab2c013b52",
+          "title": "Forwarder negative login with email",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "shows error for invalid email format",
+              "fullTitle": "Forwarder negative login with email shows error for invalid email format",
+              "timedOut": null,
+              "duration": 5444,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const email = \"tester@.com\";\nconst password = Cypress.env(\"FORWARDER_PASSWORD\");\n_ForwarderLoginPage.default.login(email, password);\n_ForwarderLoginPage.default.getErrorMessageEmail().should(\"be.visible\").and(\"contain\", \"Please enter a valid email address\");",
+              "err": {},
+              "uuid": "85df5e74-1e0a-4d99-8248-1f3ae83481ae",
+              "parentUUID": "21d94ac2-bef4-48f0-a530-f2ab2c013b52",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "shows error for invalid passwrod format",
+              "fullTitle": "Forwarder negative login with email shows error for invalid passwrod format",
+              "timedOut": null,
+              "duration": 4039,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const email = Cypress.env(\"FORWARDER_EMAIL\");\nconst password = \"test\";\n_ForwarderLoginPage.default.login(email, password);\n_ForwarderLoginPage.default.getErrorMessagePassword().should(\"be.visible\").and(\"contain\", \"Please enter a valid password\");",
+              "err": {},
+              "uuid": "c4a79321-141f-471c-baca-437ba7cfe21e",
+              "parentUUID": "21d94ac2-bef4-48f0-a530-f2ab2c013b52",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "85df5e74-1e0a-4d99-8248-1f3ae83481ae",
+            "c4a79321-141f-471c-baca-437ba7cfe21e"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 9483,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

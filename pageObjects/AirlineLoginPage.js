@@ -22,6 +22,24 @@ class AirlineLoginPage {
   getErrorMessagePassword() {
     return cy.get(".error-msg");
   }
+  logout() {
+    // Click on the profile picture to open dropdown
+    cy.get(
+      '.dropdown-toggle.kt-header__topbar-wrapper img[alt="profile picture"]',
+      { timeout: 10000 }
+    )
+      .should("be.visible")
+      .click({ force: true });
+
+    // Wait for the dropdown and click Sign Out button
+    cy.get("button.btn.btn-sign-out", { timeout: 10000 })
+      .should("be.visible")
+      .first()
+      .click({ force: true });
+
+    // Verify redirection back to login
+    cy.url({ timeout: 10000 }).should("include", "/auth/login");
+  }
 }
 
 export default new AirlineLoginPage();

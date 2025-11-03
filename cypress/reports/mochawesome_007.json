@@ -1,0 +1,152 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 1,
+    "pending": 0,
+    "failures": 2,
+    "start": "2025-11-03T10:13:24.335Z",
+    "end": "2025-11-03T10:15:46.127Z",
+    "duration": 141792,
+    "testsRegistered": 3,
+    "passPercent": 33.33333333333333,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "ac7a9527-ca27-45cd-a2d0-d40a82c5e621",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\QuoteRequestFlow\\QuoteRequest_Rejected.js",
+      "file": "cypress\\e2e\\Bookings\\QuoteRequestFlow\\QuoteRequest_Rejected.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bff39aba-47b1-41b9-8b83-6562ce0f4e18",
+          "title": "Forwarder Quote Request Flow",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Forwarder request a quote and verified quote requested status",
+              "fullTitle": "Forwarder Quote Request Flow Forwarder request a quote and verified quote requested status",
+              "timedOut": null,
+              "duration": 78114,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_PageEBookingFlow.default.selectTheSINoffice();\n_PageQuoteRequest_Accepted.default.typeDestination(\"CDG - Paris Charles de Gaulle\");\n_PageQuoteRequest_Accepted.default.changeLoadType();\n_PageQuoteRequest_Accepted.default.fillPieceWeightVolume(1, 1, 1);\n_PageQuoteRequest_Accepted.default.clickSearchButton();\ncy.url({\n  timeout: 20000\n}).should(\"include\", \"/forwarder/search/search-result\");\n_PageQuoteRequest_Accepted.default.closeRandomModalsIfPresent();\n_PageQuoteRequest_Accepted.default.tickCheckboxBookNowForCargoAirline();\n_PageQuoteRequest_Accepted.default.clickQuoteReqeustButton();\n_PageQuoteRequest_Accepted.default.typeRateForQuote();\n_PageQuoteRequest_Accepted.default.clickSubmitQuoteButton();\n_PageQuoteRequest_Accepted.default.clickFirstExpansionIndicator();\n_PageQuoteRequest_Accepted.default.clickOnTheQuoteInfoButton();\n_PageQuoteRequest_Accepted.default.verifyQuoteRequestedStatus();\n_ForwarderLoginPage.default.logout();",
+              "err": {},
+              "uuid": "794a0d5d-71bc-4670-b4d9-75db05c427fc",
+              "parentUUID": "bff39aba-47b1-41b9-8b83-6562ce0f4e18",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Arine reject the quote",
+              "fullTitle": "Forwarder Quote Request Flow Arine reject the quote",
+              "timedOut": null,
+              "duration": 44576,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsAirline();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/airline/quote/quote-list\");\ncy.intercept(\"GET\", /\\/quotes\\/\\d+\\/subscribers/, {\n  statusCode: 200,\n  body: []\n}).as(\"subscribers\");\n_ReqeusestBooking_Rejected.default.clickAirlineInfoButton();\n// RequestBooking_Reject.verifyBookingRequestedStatus();\n_ReqeusestBooking_Rejected.default.clickOnTheRejectButton();\n_ReqeusestBooking_Rejected.default.clickRejectReason();\n_ReqeusestBooking_Rejected.default.confirmRejectReason();\n_ReqeusestBooking_Rejected.default.confirmRejectModal();\n_ReqeusestBooking_Rejected.default.verifyBookingRejectedStatus();\n_AirlineLoginPage.default.logout();",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 20000ms: Expected to find element: `button.swal2-confirm.btn.btn-danger`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 20000ms: Expected to find element: `button.swal2-confirm.btn.btn-danger`, but never found it.\n    at ForwarderRequestBooking_Rejected.confirmRejectModal (webpack:///./pageObjects/Bookings/ReqeustedBooking/ReqeusestBooking_Rejected.js:198:7)\n    at Context.eval (webpack:///./cypress/e2e/Bookings/QuoteRequestFlow/QuoteRequest_Rejected.js:49:26)",
+                "diff": null
+              },
+              "uuid": "ab958055-6432-4afc-8b78-1829e94c16f0",
+              "parentUUID": "bff39aba-47b1-41b9-8b83-6562ce0f4e18",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forwarder verifies quote is rejected",
+              "fullTitle": "Forwarder Quote Request Flow Forwarder verifies quote is rejected",
+              "timedOut": null,
+              "duration": 18421,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder();\n_ReqeusestBooking_Rejected.default.clickOnTheshipmentsPage();\n_ReqeusestBooking_Rejected.default.ClickInfoButtonHistoryPage();\n_ReqeusestBooking_Rejected.default.verifyBookingRejectedStatus();",
+              "err": {
+                "message": "AssertionError: expected 'DELIVERED' to equal 'BOOKING REJECTED'",
+                "estack": "AssertionError: expected 'DELIVERED' to equal 'BOOKING REJECTED'\n    at Context.eval (webpack:///./pageObjects/Bookings/ReqeustedBooking/ReqeusestBooking_Rejected.js:215:26)\n    at getRet (https://app.dev.cargoai.co/__cypress/runner/cypress_runner.js:122067:20)\n    at tryCatcher (https://app.dev.cargoai.co/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://app.dev.cargoai.co/__cypress/runner/cypress_runner.js:4285:29)\n    at Context.thenFn (https://app.dev.cargoai.co/__cypress/runner/cypress_runner.js:122078:66)\n    at Context.then (https://app.dev.cargoai.co/__cypress/runner/cypress_runner.js:122329:21)",
+                "diff": "- 'DELIVERED'\n+ 'BOOKING REJECTED'\n"
+              },
+              "uuid": "0375d0b9-3733-414e-9282-3248ac7262d8",
+              "parentUUID": "bff39aba-47b1-41b9-8b83-6562ce0f4e18",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "794a0d5d-71bc-4670-b4d9-75db05c427fc"
+          ],
+          "failures": [
+            "ab958055-6432-4afc-8b78-1829e94c16f0",
+            "0375d0b9-3733-414e-9282-3248ac7262d8"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 141111,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

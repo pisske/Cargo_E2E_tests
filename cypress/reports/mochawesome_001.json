@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:01:36.278Z",
+    "end": "2025-11-03T10:01:49.675Z",
+    "duration": 13397,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "6c183581-8567-4a0e-8096-74c39f499dba",
+      "title": "",
+      "fullFile": "cypress\\e2e\\airline\\login.cy.js",
+      "file": "cypress\\e2e\\airline\\login.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "eca017b9-e347-4ba2-84eb-54c8d0bcb00a",
+          "title": "Airline Positive Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "lands on airline dashboard",
+              "fullTitle": "Airline Positive Login lands on airline dashboard",
+              "timedOut": null,
+              "duration": 13313,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.url({\n  timeout: 10000\n}).should(\"include\", \"/airline/quote/quote-list\");",
+              "err": {},
+              "uuid": "12d04add-305c-4971-868a-5d8046ba4d01",
+              "parentUUID": "eca017b9-e347-4ba2-84eb-54c8d0bcb00a",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "12d04add-305c-4971-868a-5d8046ba4d01"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 13313,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

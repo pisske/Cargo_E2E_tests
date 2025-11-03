@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:01:52.748Z",
+    "end": "2025-11-03T10:02:13.308Z",
+    "duration": 20560,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "f5afbe52-a3fb-47e3-8632-8bce6b05c1cd",
+      "title": "",
+      "fullFile": "cypress\\e2e\\forwarder\\login.cy.js",
+      "file": "cypress\\e2e\\forwarder\\login.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "0935fad3-1a67-433f-b31f-819b40308686",
+          "title": "Forwarder positive  Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "lands on search page after login",
+              "fullTitle": "Forwarder positive  Login lands on search page after login",
+              "timedOut": null,
+              "duration": 19970,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.url({\n  timeout: 10000\n}).should(\"include\", \"/forwarder/search/forwarder-search\");\ncy.get(\".select-trigger\", {\n  timeout: 10000\n}).should(\"be.visible\");",
+              "err": {},
+              "uuid": "15ce7aea-91af-4729-a174-a9f25c2f4319",
+              "parentUUID": "0935fad3-1a67-433f-b31f-819b40308686",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "15ce7aea-91af-4729-a174-a9f25c2f4319"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 19970,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

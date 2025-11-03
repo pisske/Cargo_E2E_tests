@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:18:24.516Z",
+    "end": "2025-11-03T10:22:14.253Z",
+    "duration": 229737,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "586b9bfe-30f4-4c39-8d7c-e00ae02967b6",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\ReqeustBooking\\RequestBooking_Confirmed.js",
+      "file": "cypress\\e2e\\Bookings\\ReqeustBooking\\RequestBooking_Confirmed.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "34fd27f3-313d-4870-b911-0242c480c2d7",
+          "title": "Forwarder and Airline Request Booking Flow",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Forwarder requests a booking",
+              "fullTitle": "Forwarder and Airline Request Booking Flow Forwarder requests a booking",
+              "timedOut": null,
+              "duration": 86427,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder();\n_RequestBooking_Confirmed.default.selectTheCDGoffice();\n_RequestBooking_Confirmed.default.typeDestination(\"SIN - Singapore Changi\");\n_RequestBooking_Confirmed.default.changeLoadType();\n_RequestBooking_Confirmed.default.fillPieceWeightVolume(1, 1, 1);\n_RequestBooking_Confirmed.default.clickSearchButton();\n_RequestBooking_Confirmed.default.closeRandomModalsIfPresent();\n_RequestBooking_Confirmed.default.extendFlightDetails();\n_RequestBooking_Confirmed.default.submitRequsetBooking();\n_RequestBooking_Confirmed.default.RequsetBooking();\n_RequestBooking_Confirmed.default.confirmationRequestBooking();\n_RequestBooking_Confirmed.default.clickInfoButtonHistoryPage();\n_RequestBooking_Confirmed.default.verifyBookingRequestedStatus();\n_ForwarderLoginPage.default.logout(); // keep your logout here",
+              "err": {},
+              "uuid": "e426915c-5362-4b00-b76d-720ff3d48925",
+              "parentUUID": "34fd27f3-313d-4870-b911-0242c480c2d7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Airline edits AWB and confirms booking",
+              "fullTitle": "Forwarder and Airline Request Booking Flow Airline edits AWB and confirms booking",
+              "timedOut": null,
+              "duration": 121608,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsAirline(); // login as airline\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/airline/quote/quote-list\");\ncy.intercept(\"GET\", /\\/quotes\\/\\d+\\/subscribers/, {\n  statusCode: 200,\n  body: []\n}).as(\"subscribers\");\n_RequestBooking_Confirmed.default.clickAirlineInfoButton();\n_RequestBooking_Confirmed.default.clckEditAWBnumber();\n_RequestBooking_Confirmed.default.fillValidAWB();\n_RequestBooking_Confirmed.default.saveAWBnumber();\n_RequestBooking_Confirmed.default.confirmBookingAndVerifyStatus();\n_RequestBooking_Confirmed.default.moveAndVerifyInTransitStatus();\n_RequestBooking_Confirmed.default.moveAndVerifyAtDestinationStatus();\n_RequestBooking_Confirmed.default.moveAndVerifyDeliveredStatus();\n_AirlineLoginPage.default.logout(); // optional logout",
+              "err": {},
+              "uuid": "91001467-2a46-4f51-b8b5-b95d80052682",
+              "parentUUID": "34fd27f3-313d-4870-b911-0242c480c2d7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forwarder verifies delivered status",
+              "fullTitle": "Forwarder and Airline Request Booking Flow Forwarder verifies delivered status",
+              "timedOut": null,
+              "duration": 20135,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.loginAsForwarder(); // login again as forwarder\n_RequestBooking_Confirmed.default.confirmtSatusDeliveredsForwarder();",
+              "err": {},
+              "uuid": "8c239fa2-72e3-48cf-a8a7-6bb4a226dbb0",
+              "parentUUID": "34fd27f3-313d-4870-b911-0242c480c2d7",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "e426915c-5362-4b00-b76d-720ff3d48925",
+            "91001467-2a46-4f51-b8b5-b95d80052682",
+            "8c239fa2-72e3-48cf-a8a7-6bb4a226dbb0"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 228170,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

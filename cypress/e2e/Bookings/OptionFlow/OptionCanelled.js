@@ -1,3 +1,4 @@
+import PageEBookingFlow from "../../../../pageObjects/Bookings/eBookingFlow/PageEBookingFlow";
 import PageOptionCancelled from "../../../../pageObjects/Bookings/OptionFlow/PageOption_Cancelled";
 
 describe("Forwarder Booking Flow", () => {
@@ -7,6 +8,7 @@ describe("Forwarder Booking Flow", () => {
   });
 
   it("should complete the Option Confrimed flow from search to delivered status", () => {
+    PageEBookingFlow.selectTheSINoffice();
     PageOptionCancelled.typeDestination("CDG - Paris Charles de Gaulle");
     PageOptionCancelled.changeLoadType();
     PageOptionCancelled.fillPieceWeightVolume(1, 1, 1);

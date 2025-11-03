@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2025-11-03T10:28:39.864Z",
+    "end": "2025-11-03T10:30:59.501Z",
+    "duration": 139637,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "8117bafb-7d0b-495e-b792-517f57629b99",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Bookings\\eBookingflow\\EBookingFlow_Cancelled.cy.js",
+      "file": "cypress\\e2e\\Bookings\\eBookingflow\\EBookingFlow_Cancelled.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "292cd710-381a-4d05-9f22-fb39af1366d1",
+          "title": "Forwarder Booking Flow Status Canceled",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should verified canceled status",
+              "fullTitle": "Forwarder Booking Flow Status Canceled should verified canceled status",
+              "timedOut": null,
+              "duration": 139416,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "_PageEBookingFlow.default.selectTheSINoffice();\n_PageEBookingFlow_Cancelled.default.typeDestination(\"CDG - Paris Charles de Gaulle\");\n_PageEBookingFlow_Cancelled.default.changeLoadType();\n_PageEBookingFlow_Cancelled.default.fillPieceWeightVolume(1, 1, 1);\n_PageEBookingFlow_Cancelled.default.clickSearchButton();\ncy.url().should(\"include\", \"/forwarder/search/search-result\");\n_PageEBookingFlow_Cancelled.default.closeRandomModalsIfPresent();\n_PageEBookingFlow_Cancelled.default.clickBookNowForCargoAirline();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/shipment-details\");\n_PageEBookingFlow_Cancelled.default.clickOnTheBookButton();\n_PageEBookingFlow_Cancelled.default.clickOnTheConfirmationModal();\ncy.url({\n  timeout: 10000\n}).should(\"include\", \"/forwarder/book/booking-history\");\n_PageEBookingFlow_Cancelled.default.ClickInfoButtonHistoryPage();\n_PageEBookingFlow_Cancelled.default.clickOnTheCacnelButton();\n_PageEBookingFlow_Cancelled.default.clickCancelReason();\n_PageEBookingFlow_Cancelled.default.confirmCanceReason();\n_PageEBookingFlow_Cancelled.default.cancelModalClick();\n_PageEBookingFlow_Cancelled.default.verifyCancelledStatus();",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 60000ms: Expected to find element: `span[placement='bottom'] span.text-uppercase`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 60000ms: Expected to find element: `span[placement='bottom'] span.text-uppercase`, but never found it.\n    at ForwarderBookingPage_Cancelled.verifyCancelledStatus (webpack:///./pageObjects/Bookings/eBookingFlow/PageEBookingFlow_Cancelled.js:144:7)\n    at Context.eval (webpack:///./cypress/e2e/Bookings/eBookingflow/EBookingFlow_Cancelled.cy.js:32:31)",
+                "diff": null
+              },
+              "uuid": "b4eff926-be32-4cd5-9c22-3ddc72a8dc92",
+              "parentUUID": "292cd710-381a-4d05-9f22-fb39af1366d1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "b4eff926-be32-4cd5-9c22-3ddc72a8dc92"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 139416,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

@@ -13,7 +13,7 @@ const SELECTORS = {
   cancelButton: "#cancel-booking",
   cancelReason: "#reason-no-show-late-delivery",
   confirmCancelReason: "#cancellation-reason-confirm-btn",
-  swalCancelBookingButton: "button.swal2-confirm.btn.btn-danger",
+  cancelBookingButton: "button.swal2-confirm.btn.btn-danger",
 };
 class ForwarderBookingPage_Cancelled {
   navigateToNewBooking() {
@@ -51,7 +51,14 @@ class ForwarderBookingPage_Cancelled {
     cy.get(SELECTORS.volumeInput).should("be.visible").clear().type("1");
   }
   clickSearchButton() {
-    cy.get(SELECTORS.searchButton).click();
+    cy.get("kt-adhoc-search", { timeout: 15000 }).should("be.visible");
+
+    // Now search for the second one
+    cy.get("kt-search-button")
+      .should("have.length.at.least", 2)
+      .eq(1)
+      .find("button#search-button")
+      .click();
   }
   closeRandomModalsIfPresent() {
     // cy.get("body").then(($body) => {
@@ -121,12 +128,12 @@ class ForwarderBookingPage_Cancelled {
     });
   }
   cancelModalClick() {
-    cy.get(SELECTORS.swalCancelBookingButton, { timeout: 20000 }).click({
+    cy.get(SELECTORS.cancelBookingButton, { timeout: 20000 }).click({
       force: true,
     });
   }
   verifyCancelledStatus() {
-    const expectedStatus = "OPTION CANCELLED";
+    const expectedStatus = "BOOKING CANCELLED";
 
     const normalizeText = (text) =>
       text.replace(/\s+/g, " ").trim().toUpperCase();

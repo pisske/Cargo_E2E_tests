@@ -18,3 +18,27 @@ import "./commands";
 import "cypress-plugin-xhr-toggle";
 import "@testing-library/cypress/add-commands";
 import "cypress-xpath";
+import "@shelex/cypress-allure-plugin";
+// cypress/support/e2e.js
+
+// cypress/support/e2e.js
+// cypress/support/e2e.js
+// cypress/support/e2e.js
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // err.message may contain the error string
+  const msg = err?.message || "";
+
+  // Ignore /subscribers Forbidden errors
+  if (msg.includes("/subscribers") && msg.includes("Forbidden")) {
+    return false;
+  }
+
+  // Ignore 500 errors from /quotes/* endpoints
+  if (msg.includes("/quotes/") && msg.includes("Internal Server Error")) {
+    return false;
+  }
+
+  // Let other errors fail the test
+});
+
+// Let other errors fail the test

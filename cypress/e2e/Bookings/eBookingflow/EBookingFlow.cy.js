@@ -11,6 +11,7 @@ describe("Forwarder Booking Flow", () => {
   // });
 
   it("should complete the eBooking flow from search to delivered status", () => {
+    PageEBookingFlow.selectTheSINoffice();
     PageEBookingFlow.typeDestination("CDG - Paris Charles de Gaulle");
     PageEBookingFlow.changeLoadType();
     PageEBookingFlow.fillPieceWeightVolume(1, 1, 1);

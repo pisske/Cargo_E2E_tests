@@ -63,14 +63,35 @@ class PageOptionCancelled {
     const day = targetDate.getDate();
     const month = targetDate.toLocaleString("default", { month: "long" });
     const year = targetDate.getFullYear();
-
     const ariaLabel = `${day} ${month} ${year}`;
 
-    cy.get(`button[aria-label='${ariaLabel}']`).should("be.visible").click();
-  }
+    // Open calendar (force click to bypass overlay/backdrop)
+    cy.get("#flight-card-datepicker").click({ force: true });
 
+    // Wait for calendar popup to appear
+    cy.get(".mat-datepicker-content").should("be.visible");
+
+    // If the target date is not in the current month → click next month
+    cy.get("body").then(($body) => {
+      if ($body.find(`button[aria-label='${ariaLabel}']`).length === 0) {
+        cy.get('button[aria-label="Next month"]').click({ force: true });
+      }
+    });
+
+    // Click the target date button
+    cy.get(`button[aria-label='${ariaLabel}']`, { timeout: 5000 })
+      .should("exist")
+      .click({ force: true });
+  }
   clickSearchButton() {
-    cy.get(SELECTORS.searchButton).click();
+    cy.get("kt-adhoc-search", { timeout: 15000 }).should("be.visible");
+
+    // Now search for the second one
+    cy.get("kt-search-button")
+      .should("have.length.at.least", 2)
+      .eq(1)
+      .find("button#search-button")
+      .click();
   }
   closeRandomModalsIfPresent() {
     // cy.get("body").then(($body) => {

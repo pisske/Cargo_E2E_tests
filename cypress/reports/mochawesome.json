@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-03T10:01:22.830Z",
+    "end": "2025-11-03T10:01:32.274Z",
+    "duration": 9444,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "856ae65c-eead-4023-bd90-e2ca7caf9e82",
+      "title": "",
+      "fullFile": "cypress\\e2e\\airline\\airline_negative_login.js",
+      "file": "cypress\\e2e\\airline\\airline_negative_login.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "7be2728a-d8c8-4754-b36a-6bf9f8e17f4a",
+          "title": "Airline negative login with email",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "shows error for invalid email format",
+              "fullTitle": "Airline negative login with email shows error for invalid email format",
+              "timedOut": null,
+              "duration": 5342,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const email = \"tester@.com\";\nconst password = Cypress.env(\"AIRLINE_PASSWORD\");\n_AirlineLoginPage.default.login(email, password);\n_AirlineLoginPage.default.getErrorMessageEmail().should(\"be.visible\").and(\"contain\", \"Please enter a valid email address\");",
+              "err": {},
+              "uuid": "42311d44-71ab-4853-a091-fbf661be0de5",
+              "parentUUID": "7be2728a-d8c8-4754-b36a-6bf9f8e17f4a",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "shows error for invalid passwrod format",
+              "fullTitle": "Airline negative login with email shows error for invalid passwrod format",
+              "timedOut": null,
+              "duration": 3844,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const email = Cypress.env(\"AIRLINE_EMAIL\");\nconst password = \"test\";\n_AirlineLoginPage.default.login(email, password);\n_AirlineLoginPage.default.getErrorMessagePassword().should(\"be.visible\").and(\"contain\", \"Please enter a valid password\");",
+              "err": {},
+              "uuid": "d960008f-27b0-4569-b5e5-9d7bef09b1a2",
+              "parentUUID": "7be2728a-d8c8-4754-b36a-6bf9f8e17f4a",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "42311d44-71ab-4853-a091-fbf661be0de5",
+            "d960008f-27b0-4569-b5e5-9d7bef09b1a2"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 9186,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}
