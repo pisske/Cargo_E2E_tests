@@ -24,22 +24,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 🧪 Optional: Debug environment variables (safe to remove later)
-      - name: Debug environment variables
-        env:
-          FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
-          AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
-        run: |
-          echo "FORWARDER_EMAIL: ${FORWARDER_EMAIL}"
-          echo "AIRLINE_EMAIL: ${AIRLINE_EMAIL}"
-
-      # ✅ Run Cypress tests with proper environment variables
+      # ✅ Pass credentials as CYPRESS_ variables
+      #    (Cypress will expose them automatically as Cypress.env('<name>'))
       - name: Run Cypress tests
         env:
-          FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
-          FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
-          AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
-          AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
+          CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
+          CYPRESS_FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
+          CYPRESS_AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
+          CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
         run: npm run cypress:run:allure
 
       # 📊 Upload Allure report
