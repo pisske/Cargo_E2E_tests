@@ -13,18 +13,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Optional: set environment variables from GitHub secrets
+      # 4. Set environment variables from GitHub secrets
       - name: Set environment variables
         run: |
           echo "FORWARDER_EMAIL=${{ secrets.FORWARDER_EMAIL }}" >> $GITHUB_ENV
@@ -32,15 +35,16 @@ jobs:
           echo "AIRLINE_EMAIL=${{ secrets.AIRLINE_EMAIL }}" >> $GITHUB_ENV
           echo "AIRLINE_PASSWORD=${{ secrets.AIRLINE_PASSWORD }}" >> $GITHUB_ENV
 
+      # 5. Run Cypress tests with Mochawesome reporter
       - name: Run Cypress tests
         run: npm run cypress:run:mocha
 
+      # 6. Generate Allure report
       - name: Generate Allure report
         run: |
           npm run allure:report
-          npm run allure:open # optional, can be skipped if you just want the files
 
-      # Upload Mochawesome report
+      # 7. Upload Mochawesome report artifact
       - name: Upload Mochawesome Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,7 +52,7 @@ jobs:
           name: mochawesome-report
           path: cypress/reports/html
 
-      # Upload Allure report
+      # 8. Upload Allure report artifact
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
