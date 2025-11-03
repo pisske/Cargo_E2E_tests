@@ -12,7 +12,7 @@ module.exports = defineConfig({
     viewportHeight: 720,
     reporter: "mochawesome",
     reporterOptions: {
-      reportDir: "cypress/reports",
+      reportDir: "cypress/reports/html",
       overwrite: true,
       html: true,
       json: true,
