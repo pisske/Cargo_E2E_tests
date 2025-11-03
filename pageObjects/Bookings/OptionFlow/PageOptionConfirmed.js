@@ -99,8 +99,9 @@ class PageOptionConfirmed {
       .should("have.length.at.least", 2)
       .eq(1)
       .find("button#search-button")
-      .click();
+      .click({ force: true });
   }
+
   closeRandomModalsIfPresent() {
     // cy.get("body").then(($body) => {
     //   if ($body.find(".booking-details-popup").length > 0) {

@@ -1,4 +1,4 @@
-name: Run Cypress Tests
+name: CargoAI_E2E
 
 on:
   push:
@@ -13,27 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the repo
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.12.2"
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # ✅ Pass credentials as CYPRESS_ variables
+      # 4️⃣ Run Cypress tests
       - name: Run Cypress tests
         env:
+          # Cypress environment variables for login
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
           CYPRESS_FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
           CYPRESS_AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
           CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
+          # Optional: Set viewport for headless CI runs
+          CYPRESS_VIEWPORT_WIDTH: 1920
+          CYPRESS_VIEWPORT_HEIGHT: 1080
         run: npm run cypress:run:allure
 
-      # 📊 Upload Allure report as artifact (optional backup)
+      # 5️⃣ Upload Allure report as artifact (backup)
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -41,10 +48,13 @@ jobs:
           name: allure-report
           path: allure-report
 
-      # 🌐 Publish Allure report to GitHub Pages
+      # 6️⃣ Publish Allure report to GitHub Pages
       - name: Publish Allure report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
+          publish_branch: gh-pages # The branch GitHub Pages serves
+          user_name: "github-actions"
+          user_email: "github-actions@github.com"
