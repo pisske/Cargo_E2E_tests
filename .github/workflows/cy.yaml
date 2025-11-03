@@ -24,23 +24,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ✅ Set environment variables from GitHub secrets (no quotes!)
-      - name: Set environment variables
-        run: |
-          echo "FORWARDER_EMAIL=${{ secrets.FORWARDER_EMAIL }}" >> $GITHUB_ENV
-          echo "FORWARDER_PASSWORD=${{ secrets.FORWARDER_PASSWORD }}" >> $GITHUB_ENV
-          echo "AIRLINE_EMAIL=${{ secrets.AIRLINE_EMAIL }}" >> $GITHUB_ENV
-          echo "AIRLINE_PASSWORD=${{ secrets.AIRLINE_PASSWORD }}" >> $GITHUB_ENV
-
       # 🧪 Optional: Debug environment variables (safe to remove later)
       - name: Debug environment variables
+        env:
+          FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
+          AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
         run: |
           echo "FORWARDER_EMAIL: ${FORWARDER_EMAIL}"
           echo "AIRLINE_EMAIL: ${AIRLINE_EMAIL}"
-        # Mask secrets in logs just in case
-        shell: bash
 
+      # ✅ Run Cypress tests with proper environment variables
       - name: Run Cypress tests
+        env:
+          FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
+          FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
+          AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
+          AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
         run: npm run cypress:run:allure
 
       # 📊 Upload Allure report
