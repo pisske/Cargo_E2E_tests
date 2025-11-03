@@ -54,7 +54,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
-          publish_branch: gh-pages # GitHub Pages will serve from this branch
+          publish_dir: ./allure-report/* # ✅ push contents, not the folder
+          publish_branch: gh-pages
           user_name: "github-actions"
           user_email: "github-actions@github.com"
