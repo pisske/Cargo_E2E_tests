@@ -10,12 +10,13 @@ module.exports = defineConfig({
     // Example optional settings you can safely add here:
     viewportWidth: 1280,
     viewportHeight: 720,
-    reporter: "mochawesome",
+    reporter: "cypress-mochawesome-reporter",
     reporterOptions: {
       reportDir: "cypress/reports/html",
-      overwrite: true,
-      html: true,
-      json: true,
+      embeddedScreenshots: true,
+      inlineAssets: true,
+      charts: true,
+      reportPageTitle: "Cypress Test Report",
     },
 
     setupNodeEvents(on, config) {
