@@ -25,7 +25,6 @@ jobs:
         run: npm ci
 
       # ✅ Pass credentials as CYPRESS_ variables
-      #    (Cypress will expose them automatically as Cypress.env('<name>'))
       - name: Run Cypress tests
         env:
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
@@ -34,10 +33,18 @@ jobs:
           CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
         run: npm run cypress:run:allure
 
-      # 📊 Upload Allure report
+      # 📊 Upload Allure report as artifact (optional backup)
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report
+
+      # 🌐 Publish Allure report to GitHub Pages
+      - name: Publish Allure report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report

@@ -85,9 +85,10 @@ class PageOptionConfirmed {
     });
 
     // Click the target date button
-    cy.get(`button[aria-label='${ariaLabel}']`, { timeout: 5000 })
-      .should("exist")
-      .click({ force: true });
+    cy.get(`button[aria-label='${ariaLabel}']`, { timeout: 10000 })
+      .should("be.visible") // ensure it is visible
+      .and("not.be.disabled") // ensure it is enabled
+      .click();
   }
 
   clickSearchButton() {
