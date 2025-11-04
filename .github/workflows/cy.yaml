@@ -27,12 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Clean Allure report folder BEFORE running tests
-      - name: Clean Allure report
-        run: rm -rf allure-report
-
-      # 5️⃣ Run Cypress tests with Allure
-      - name: Run Cypress tests
+      # 4️⃣ Run Cypress tests and generate Allure report (CI-friendly)
+      - name: Run Cypress tests with Allure
         env:
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
           CYPRESS_FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
@@ -40,12 +36,9 @@ jobs:
           CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
           CYPRESS_VIEWPORT_WIDTH: 1920
           CYPRESS_VIEWPORT_HEIGHT: 1080
-        run: |
-          set -e
-          # Continue even if Cypress fails, so workflow doesn’t stop
-          npm run cypress:run:allure || true
+        run: npm run cypress:run:allure:ci
 
-      # 6️⃣ Check if Allure report exists
+      # 5️⃣ Check if Allure report exists
       - name: Check Allure report folder
         id: check_report
         run: |
@@ -58,7 +51,7 @@ jobs:
             echo "Allure report NOT found!"
           fi
 
-      # 7️⃣ Upload Allure report artifact ONLY if folder exists
+      # 6️⃣ Upload Allure report artifact ONLY if folder exists
       - name: Upload Allure Report Artifact
         if: steps.check_report.outputs.report_exists == 'true'
         uses: actions/upload-artifact@v4
@@ -66,7 +59,7 @@ jobs:
           name: allure-report
           path: allure-report
 
-      # 8️⃣ Publish Allure report to GitHub Pages ONLY if folder exists
+      # 7️⃣ Publish Allure report to GitHub Pages ONLY if folder exists
       - name: Publish Allure report to GitHub Pages
         if: steps.check_report.outputs.report_exists == 'true'
         uses: peaceiris/actions-gh-pages@v3
