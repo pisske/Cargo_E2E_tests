@@ -45,12 +45,12 @@ jobs:
           # Continue even if Cypress fails, so workflow doesn’t stop
           npm run cypress:run:allure || true
 
-      # 6️⃣ Debug step: verify Allure report
+      # 6️⃣ Check if Allure report exists
       - name: Check Allure report folder
         id: check_report
         run: |
           echo "Checking if Allure report exists..."
-          if [ -f ./allure-report/index.html ]; then
+          if [ -d ./allure-report ] && [ -f ./allure-report/index.html ]; then
             echo "report_exists=true" >> $GITHUB_OUTPUT
             echo "Allure report found!"
           else
@@ -58,15 +58,15 @@ jobs:
             echo "Allure report NOT found!"
           fi
 
-      # 7️⃣ Upload Allure report artifact (backup)
+      # 7️⃣ Upload Allure report artifact ONLY if folder exists
       - name: Upload Allure Report Artifact
-        if: always()
+        if: steps.check_report.outputs.report_exists == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report
 
-      # 8️⃣ Publish Allure report to GitHub Pages only if report exists
+      # 8️⃣ Publish Allure report to GitHub Pages ONLY if folder exists
       - name: Publish Allure report to GitHub Pages
         if: steps.check_report.outputs.report_exists == 'true'
         uses: peaceiris/actions-gh-pages@v3
