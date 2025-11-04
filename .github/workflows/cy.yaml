@@ -27,7 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Run Cypress tests with Allure
+      # 4️⃣ Clean Allure report folder BEFORE running tests
+      - name: Clean Allure report
+        run: rm -rf allure-report
+
+      # 5️⃣ Run Cypress tests with Allure
       - name: Run Cypress tests
         env:
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
@@ -36,11 +40,9 @@ jobs:
           CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
           CYPRESS_VIEWPORT_WIDTH: 1920
           CYPRESS_VIEWPORT_HEIGHT: 1080
-        run: |
-          set -e
-          npm run cypress:run:allure || true
+        run: npm run cypress:run:allure # <-- removed "|| true"
 
-      # 5️⃣ Upload Allure report artifact (backup)
+      # 6️⃣ Upload Allure report artifact (backup)
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,7 +50,7 @@ jobs:
           name: allure-report
           path: allure-report
 
-      # 6️⃣ Publish Allure report to GitHub Pages (always fresh)
+      # 7️⃣ Publish Allure report to GitHub Pages (always fresh)
       - name: Publish Allure report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
