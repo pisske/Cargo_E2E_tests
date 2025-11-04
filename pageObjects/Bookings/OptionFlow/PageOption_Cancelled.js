@@ -91,7 +91,7 @@ class PageOptionCancelled {
       .should("have.length.at.least", 2)
       .eq(1)
       .find("button#search-button")
-      .click();
+      .click({ force: true });
   }
   closeRandomModalsIfPresent() {
     // cy.get("body").then(($body) => {

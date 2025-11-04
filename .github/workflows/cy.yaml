@@ -6,27 +6,34 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 5 * * *"
-
-permissions:
-  contents: write # ✅ required for pushing
+    - cron: "0 5 * * *" # Runs every day at 5 AM UTC
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.12.2"
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4️⃣ Clean old Allure reports to ensure fresh generation
+      - name: Clean old Allure reports
+        run: |
+          rm -rf allure-report
+          rm -rf allure-results
+
+      # 5️⃣ Run Cypress tests with Allure
       - name: Run Cypress tests
         env:
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
@@ -37,8 +44,13 @@ jobs:
           CYPRESS_VIEWPORT_HEIGHT: 1080
         run: |
           set -e
-          npm run cypress:run:allure || true
+          npm run cypress:run:allure || true   # continue even if tests fail
 
+      # 6️⃣ Generate Allure report
+      - name: Generate Allure report
+        run: npm run allure:generate
+
+      # 7️⃣ Upload Allure report artifact (backup / debugging)
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,12 +58,14 @@ jobs:
           name: allure-report
           path: allure-report
 
+      # 8️⃣ Publish Allure report to GitHub Pages
       - name: Publish Allure report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
           publish_branch: gh-pages
+          publish_dir: ./allure-report
+          keep_files: false # ✅ remove old files before publishing
           user_name: "github-actions"
           user_email: "github-actions@github.com"

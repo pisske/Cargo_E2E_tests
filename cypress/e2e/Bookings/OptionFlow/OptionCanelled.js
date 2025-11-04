@@ -7,7 +7,7 @@ describe("Forwarder Booking Flow", () => {
     cy.loginAsForwarder();
   });
 
-  it("should complete the Option Confrimed flow from search to delivered status", () => {
+  it("should complete the Option Cancelle and verified status", () => {
     PageEBookingFlow.selectTheSINoffice();
     PageOptionCancelled.typeDestination("CDG - Paris Charles de Gaulle");
     PageOptionCancelled.changeLoadType();
