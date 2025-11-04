@@ -13,9 +13,10 @@
     "clean:allure": "npx rimraf allure-results allure-report",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "cypress:run:headless": "cypress run --headless",
     "allure:report": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report",
     "cypress:run:allure": "npm run clean:allure && npm run cypress:run && npm run allure:report && npm run allure:open",
-    "cypress:run:allure:ci": "npm run clean:allure && npm run cypress:run && npm run allure:report"
+    "cypress:run:allure:ci": "npm run clean:allure && npm run cypress:run:headless && npm run allure:report"
   }
 }
