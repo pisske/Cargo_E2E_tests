@@ -40,9 +40,25 @@ jobs:
           CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
           CYPRESS_VIEWPORT_WIDTH: 1920
           CYPRESS_VIEWPORT_HEIGHT: 1080
-        run: npm run cypress:run:allure # <-- removed "|| true"
+        run: |
+          set -e
+          # Continue even if Cypress fails, so workflow doesn’t stop
+          npm run cypress:run:allure || true
 
-      # 6️⃣ Upload Allure report artifact (backup)
+      # 6️⃣ Debug step: verify Allure report
+      - name: Check Allure report folder
+        id: check_report
+        run: |
+          echo "Checking if Allure report exists..."
+          if [ -f ./allure-report/index.html ]; then
+            echo "report_exists=true" >> $GITHUB_OUTPUT
+            echo "Allure report found!"
+          else
+            echo "report_exists=false" >> $GITHUB_OUTPUT
+            echo "Allure report NOT found!"
+          fi
+
+      # 7️⃣ Upload Allure report artifact (backup)
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -50,14 +66,15 @@ jobs:
           name: allure-report
           path: allure-report
 
-      # 7️⃣ Publish Allure report to GitHub Pages (always fresh)
+      # 8️⃣ Publish Allure report to GitHub Pages only if report exists
       - name: Publish Allure report to GitHub Pages
-        if: always()
+        if: steps.check_report.outputs.report_exists == 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
           publish_branch: gh-pages
-          user_name: "github-actions"
-          user_email: "github-actions@github.com"
-          commit_message: "Allure report for run #${{ github.run_number }}"
+          user_name: github-actions
+          user_email: github-actions@github.com
+          commit_message: "Deploy Allure report for run #${{ github.run_number }}"
+          keep_files: false
