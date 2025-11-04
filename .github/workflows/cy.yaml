@@ -6,28 +6,27 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 5 * * *" # Runs every day at 5 AM UTC
+    - cron: "0 5 * * *"
+
+permissions:
+  contents: write # ✅ required for pushing
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.12.2"
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Run Cypress tests with Allure
       - name: Run Cypress tests
         env:
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
@@ -38,9 +37,8 @@ jobs:
           CYPRESS_VIEWPORT_HEIGHT: 1080
         run: |
           set -e
-          npm run cypress:run:allure || true   # allow workflow to continue even if tests fail
+          npm run cypress:run:allure || true
 
-      # 5️⃣ Upload Allure report artifact (backup and fast debug)
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,13 +46,12 @@ jobs:
           name: allure-report
           path: allure-report
 
-      # 6️⃣ Publish Allure report to GitHub Pages
       - name: Publish Allure report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report/* # ✅ push contents, not the folder
+          publish_dir: ./allure-report
           publish_branch: gh-pages
           user_name: "github-actions"
           user_email: "github-actions@github.com"
