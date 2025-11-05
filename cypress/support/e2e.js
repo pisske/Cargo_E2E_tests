@@ -19,6 +19,8 @@ import "cypress-plugin-xhr-toggle";
 import "@testing-library/cypress/add-commands";
 import "cypress-xpath";
 import "@shelex/cypress-allure-plugin";
+import "cypress-real-events";
+
 // cypress/support/e2e.js
 
 // cypress/support/e2e.js

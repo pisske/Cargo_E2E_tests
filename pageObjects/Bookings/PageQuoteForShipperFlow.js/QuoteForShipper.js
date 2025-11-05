@@ -4,6 +4,7 @@ const SELECTORS = {
   officeMenu:
     ".dropdown-menu.office-selector__popup.p-0.dropdown-menu-anim.show",
   createQuoteButton: "#quote-request-button",
+  nextButton: "#next-button",
 };
 class QuoteForShipper {
   selectTheOffice() {
@@ -27,27 +28,43 @@ class QuoteForShipper {
       force: true,
     });
   }
-  selectCustomer() {
-    // 1. Click the mat-select trigger
-    cy.get("div.mat-mdc-form-field-infix").first().click({ force: true });
+  //   fillCustomerDetails(name, email) {
+  //     // Scroll to and type Name
+  //     cy.get("#customer-name-input")
+  //       .scrollIntoView() // ensures element is in viewport
+  //       .should("be.visible")
+  //       .clear({ force: true })
+  //       .type(name, { force: true });
 
-    // 2. Find the overlay panel in the body
+  //     // Scroll to and type Email
+  //     cy.get("#customer-email-input")
+  //       .scrollIntoView() // ensures element is in viewport
+  //       .should("be.visible")
+  //       .clear({ force: true })
+  //       .type(email, { force: true });
+  //   }
+  selectFirstOptionFromShipper() {
+    // Step 1: Click the select to open the overlay
+    cy.get('mat-select[formcontrolname="shipper"]')
+      .scrollIntoView()
+      .should("be.visible")
+      .click();
+
+    // Step 2: Wait for the overlay panel and pick first option
     cy.get("body")
-      .find("div[id^='mat-select'][class*='mat-mdc-select-panel']", {
-        timeout: 10000,
-      })
+      .find(".cdk-overlay-pane .mat-mdc-select-panel", { timeout: 10000 })
+      .should("exist")
       .should("be.visible")
       .find("mat-option")
-      .then(($options) => {
-        const randomIndex = Math.floor(Math.random() * $options.length);
-        cy.wrap($options[randomIndex]).click();
-      });
-
-    // 3. Optional: assert something is selected
-    cy.get("div.mat-mdc-form-field-infix")
       .first()
-      .invoke("text")
-      .should("not.be.empty");
+      .click();
+
+    // Optional: verify the selection
+    cy.get('mat-select[formcontrolname="shipper"]').should("not.have.text", "");
+  }
+
+  clickNextButton() {
+    cy.get(SELECTORS.nextButton, { timeout: 50000 }).click();
   }
 }
 export default new QuoteForShipper();
