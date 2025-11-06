@@ -21,7 +21,7 @@ describe("Forwarder Booking Flow", () => {
     QuoteForShipper.tickTheCheckbox();
     QuoteForShipper.clickCreateQuoteButton();
     cy.url({ timeout: 10000 }).should("include", "/forwarder/quote/create");
-    QuoteForShipper.selectCustomerDropdown();
+    QuoteForShipper.selectFirstOptionFromShipper();
     // QuoteForShipper.fillCustomerDetails("Jphm", "Johndow@gmail.com");
     QuoteForShipper.clickNextButton();
     QuoteForShipper.clickNextButton();

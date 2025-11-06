@@ -3,7 +3,6 @@ import PageEBookingFlow from "../../../../pageObjects/Bookings/eBookingFlow/Page
 describe("Forwarder Booking Flow", () => {
   beforeEach(() => {
     cy.viewport(1366, 768);
-    cy.loginAsForwarder();
   });
 
   // it("Performs eBooking flow - total icon and confirm click", () => {
@@ -11,6 +10,7 @@ describe("Forwarder Booking Flow", () => {
   // });
 
   it("should complete the eBooking flow from search to delivered status", () => {
+    cy.loginAsForwarder();
     PageEBookingFlow.selectTheSINoffice();
     PageEBookingFlow.typeDestination("CDG - Paris Charles de Gaulle");
     PageEBookingFlow.changeLoadType();

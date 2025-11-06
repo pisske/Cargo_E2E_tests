@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Run Cypress tests and generate Allure report (CI-friendly)
+      # 4️⃣ Run Cypress tests and generate Allure report
       - name: Run Cypress tests with Allure
         env:
           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
@@ -38,30 +38,37 @@ jobs:
           CYPRESS_VIEWPORT_HEIGHT: 1080
         run: npm run cypress:run:allure:ci
 
-      # 5️⃣ Check if Allure report exists
+      # 5️⃣ Debug Allure results
+      - name: Debug Allure results
+        run: |
+          echo "Listing allure-results folder..."
+          ls -la allure-results || echo "No allure-results folder found"
+          echo "Listing allure-report folder..."
+          ls -la allure-report || echo "No allure-report folder found"
+
+      # 6️⃣ Check if Allure report exists
       - name: Check Allure report folder
         id: check_report
         run: |
-          echo "Checking if Allure report exists..."
           if [ -d ./allure-report ] && [ -f ./allure-report/index.html ]; then
             echo "report_exists=true" >> $GITHUB_OUTPUT
-            echo "Allure report found!"
+            echo "✅ Allure report found!"
           else
             echo "report_exists=false" >> $GITHUB_OUTPUT
-            echo "Allure report NOT found!"
+            echo "⚠️ Allure report NOT found!"
           fi
 
-      # 6️⃣ Upload Allure report artifact ONLY if folder exists
+      # 7️⃣ Upload Allure Report Artifact
       - name: Upload Allure Report Artifact
-        if: steps.check_report.outputs.report_exists == 'true'
+        if: always() && steps.check_report.outputs.report_exists == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report
 
-      # 7️⃣ Publish Allure report to GitHub Pages ONLY if folder exists
+      # 8️⃣ Publish Allure report to GitHub Pages
       - name: Publish Allure report to GitHub Pages
-        if: steps.check_report.outputs.report_exists == 'true'
+        if: always() && steps.check_report.outputs.report_exists == 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
