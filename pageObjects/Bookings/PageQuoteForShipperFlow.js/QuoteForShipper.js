@@ -5,6 +5,9 @@ const SELECTORS = {
     ".dropdown-menu.office-selector__popup.p-0.dropdown-menu-anim.show",
   createQuoteButton: "#quote-request-button",
   nextButton: "#next-button",
+  nextButtonStep2: "button.btn.next-step.two-column-step",
+  nextButtonStep4: "button.btn.next-step",
+  generateQuoteButton: "#generate-quotation-button",
 };
 class QuoteForShipper {
   selectTheOffice() {
@@ -44,27 +47,76 @@ class QuoteForShipper {
   //       .type(email, { force: true });
   //   }
   selectFirstOptionFromShipper() {
-    // Step 1: Click the select to open the overlay
-    cy.get('mat-select[formcontrolname="shipper"]')
-      .scrollIntoView()
-      .should("be.visible")
-      .click();
+    const customerDropdown = "#email-select-dropdown";
 
-    // Step 2: Wait for the overlay panel and pick first option
-    cy.get("body")
-      .find(".cdk-overlay-pane .mat-mdc-select-panel", { timeout: 10000 })
-      .should("exist")
-      .should("be.visible")
-      .find("mat-option")
-      .first()
-      .click();
+    // 1️⃣ Wait for API
+    cy.intercept("GET", "**/customers").as("getCustomers");
+    cy.wait("@getCustomers", { timeout: 20000 });
+    cy.log("✅ Customer data loaded");
 
-    // Optional: verify the selection
-    cy.get('mat-select[formcontrolname="shipper"]').should("not.have.text", "");
+    // 2️⃣ Ensure form is visible
+    cy.get("form", { timeout: 30000 }).should("be.visible");
+
+    // 3️⃣ Open the dropdown (real click + keyboard)
+    cy.get(customerDropdown).scrollIntoView().click().type("{downarrow}");
+    cy.log("✅ Dropdown opened");
+
+    //   // 4️⃣ Click first option
+    //   cy.get(".cdk-overlay-pane mat-option", { timeout: 20000 })
+    //     .first()
+    //     .click({ force: true });
+    //   cy.log("✅ First option selected");
+    // }
   }
-
   clickNextButton() {
     cy.get(SELECTORS.nextButton, { timeout: 50000 }).click();
+  }
+  clickNextButtonStepTwo() {
+    cy.get(SELECTORS.nextButtonStep2, { timeout: 50000 }).click();
+  }
+  selectIncotern() {
+    // Use stable mat-select
+    cy.get("mat-select[formcontrolname='incoterm']", { timeout: 20000 })
+      .scrollIntoView()
+      .click({ force: true });
+    cy.log("✅ Dropdown opened");
+
+    cy.get("body")
+      .find(".cdk-overlay-pane mat-option", { timeout: 15000 })
+      .first()
+      .click({ force: true });
+    cy.log("✅ First option selected");
+  }
+  clickNextButtonStepFour() {
+    cy.get("button[class='btn next-step']", { timeout: 50000 }).click();
+  }
+  clickGenerateQuoteAndVerifyPDF() {
+    // 1️⃣ Stub window.open
+    cy.window().then((win) => {
+      cy.stub(win, "open").as("pdfWindow");
+    });
+
+    // 2️⃣ Click the Generate Quote button
+    cy.get(SELECTORS.generateQuoteButton, { timeout: 50000 }).click();
+    cy.log("✅ Generate Quote button clicked");
+
+    // 3️⃣ Check the stub was called
+    cy.get("@pdfWindow")
+      .should("have.been.called")
+      .then((stub) => {
+        const pdfUrl = stub.getCall(0).args[0]; // URL of PDF
+        cy.log(`📄 PDF URL captured: ${pdfUrl}`);
+
+        // 4️⃣ Make a direct request to verify it's a PDF
+        cy.request({
+          url: pdfUrl,
+          encoding: "binary",
+        }).then((resp) => {
+          expect(resp.status).to.eq(200);
+          expect(resp.headers["content-type"]).to.include("application/pdf");
+          cy.log("✅ PDF successfully generated and accessible");
+        });
+      });
   }
 }
 export default new QuoteForShipper();

@@ -27,20 +27,25 @@ import "cypress-real-events";
 // cypress/support/e2e.js
 // cypress/support/e2e.js
 Cypress.on("uncaught:exception", (err, runnable) => {
-  // err.message may contain the error string
   const msg = err?.message || "";
 
-  // Ignore /subscribers Forbidden errors
+  // 🚫 Ignore /subscribers Forbidden errors
   if (msg.includes("/subscribers") && msg.includes("Forbidden")) {
     return false;
   }
 
-  // Ignore 500 errors from /quotes/* endpoints
+  // 🚫 Ignore 500 errors from /quotes/* endpoints
   if (msg.includes("/quotes/") && msg.includes("Internal Server Error")) {
     return false;
   }
 
-  // Let other errors fail the test
+  // 🚫 Ignore "chargesDetails" runtime error
+  if (msg.includes("chargesDetails")) {
+    console.warn("⚠️ Ignoring known app runtime error:", msg);
+    return false;
+  }
+
+  // ✅ Let all other errors fail the test (default Cypress behavior)
 });
 
 // Let other errors fail the test

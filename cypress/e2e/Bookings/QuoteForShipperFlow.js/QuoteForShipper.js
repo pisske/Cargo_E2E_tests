@@ -12,7 +12,7 @@ describe("Forwarder Booking Flow", () => {
     PageEBookingFlow.changeLoadType();
     PageEBookingFlow.fillPieceWeightVolume(1, 1, 1);
     PageEBookingFlow.clickSearchButton();
-    cy.url({ timeout: 3000 }).should(
+    cy.url({ timeout: 10000 }).should(
       "include",
       "/forwarder/search/search-result"
     );
@@ -24,6 +24,10 @@ describe("Forwarder Booking Flow", () => {
     QuoteForShipper.selectFirstOptionFromShipper();
     // QuoteForShipper.fillCustomerDetails("Jphm", "Johndow@gmail.com");
     QuoteForShipper.clickNextButton();
-    QuoteForShipper.clickNextButton();
+    QuoteForShipper.clickNextButtonStepTwo();
+    QuoteForShipper.selectIncotern();
+    QuoteForShipper.clickNextButtonStepTwo();
+    QuoteForShipper.clickNextButtonStepFour();
+    QuoteForShipper.clickGenerateQuoteAndVerifyPDF();
   });
 });

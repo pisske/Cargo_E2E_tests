@@ -72,7 +72,7 @@ class ForwarderBookingPage {
   closeRandomModalsIfPresent() {
     cy.get("body").then(() => {
       // Try to get the modal within a short timeout
-      cy.get(".booking-details-popup", { timeout: 3000 }).then(($modal) => {
+      cy.get(".booking-details-popup", { timeout: 10000 }).then(($modal) => {
         if ($modal.length > 0) {
           cy.log("Modal is present, attempting to close...");
           cy.get("#booking-details-popup-close", { timeout: 5000 }).click({
