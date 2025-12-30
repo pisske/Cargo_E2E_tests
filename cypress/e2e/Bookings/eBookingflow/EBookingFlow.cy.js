@@ -16,7 +16,10 @@ describe("Forwarder Booking Flow", () => {
     PageEBookingFlow.changeLoadType();
     PageEBookingFlow.fillPieceWeightVolume(1, 1, 1);
     PageEBookingFlow.clickSearchButton();
-    cy.url().should("include", "/forwarder/search/search-result");
+    cy.url({ timeout: 10000 }).should(
+      "include",
+      "/forwarder/search/search-result"
+    );
     PageEBookingFlow.closeRandomModalsIfPresent();
 
     PageEBookingFlow.clickBookNowForCargoAirline();

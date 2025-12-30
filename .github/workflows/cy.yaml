@@ -1,3 +1,83 @@
+# name: CargoAI_E2E
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+#   schedule:
+#     - cron: "0 5 * * *" # Every day at 5 AM UTC
+
+# jobs:
+#   cypress-run:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # 1️⃣ Checkout code
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       # 2️⃣ Setup Node.js
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: "20.12.2"
+
+#       # 3️⃣ Install dependencies
+#       - name: Install dependencies
+#         run: npm ci
+
+#       # 4️⃣ Run Cypress tests and generate Allure report
+#       - name: Run Cypress tests with Allure
+#         env:
+#           CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
+#           CYPRESS_FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
+#           CYPRESS_AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
+#           CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
+#           CYPRESS_VIEWPORT_WIDTH: 1920
+#           CYPRESS_VIEWPORT_HEIGHT: 1080
+#         run: npm run cypress:run:allure:ci
+
+#       # 5️⃣ Debug Allure results
+#       - name: Debug Allure results
+#         run: |
+#           echo "Listing allure-results folder..."
+#           ls -la allure-results || echo "No allure-results folder found"
+#           echo "Listing allure-report folder..."
+#           ls -la allure-report || echo "No allure-report folder found"
+
+#       # 6️⃣ Check if Allure report exists
+#       - name: Check Allure report folder
+#         id: check_report
+#         run: |
+#           if [ -d ./allure-report ] && [ -f ./allure-report/index.html ]; then
+#             echo "report_exists=true" >> $GITHUB_OUTPUT
+#             echo "✅ Allure report found!"
+#           else
+#             echo "report_exists=false" >> $GITHUB_OUTPUT
+#             echo "⚠️ Allure report NOT found!"
+#           fi
+
+#       # 7️⃣ Upload Allure Report Artifact
+#       - name: Upload Allure Report Artifact
+#         if: always() && steps.check_report.outputs.report_exists == 'true'
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: allure-report
+#           path: allure-report
+
+#       # 8️⃣ Publish Allure report to GitHub Pages
+#       - name: Publish Allure report to GitHub Pages
+#         if: always() && steps.check_report.outputs.report_exists == 'true'
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./allure-report
+#           publish_branch: gh-pages
+#           user_name: github-actions
+#           user_email: github-actions@github.com
+#           commit_message: "Deploy Allure report for run #${{ github.run_number }}"
+#           keep_files: false
 name: CargoAI_E2E
 
 on:
@@ -7,6 +87,16 @@ on:
     branches: [main]
   schedule:
     - cron: "0 5 * * *" # Every day at 5 AM UTC
+  workflow_dispatch: # Allow manual runs
+    inputs:
+      environment:
+        description: "Choose environment"
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - stg
 
 jobs:
   cypress-run:
@@ -30,10 +120,22 @@ jobs:
       # 4️⃣ Run Cypress tests and generate Allure report
       - name: Run Cypress tests with Allure
         env:
-          CYPRESS_FORWARDER_EMAIL: ${{ secrets.FORWARDER_EMAIL }}
-          CYPRESS_FORWARDER_PASSWORD: ${{ secrets.FORWARDER_PASSWORD }}
-          CYPRESS_AIRLINE_EMAIL: ${{ secrets.AIRLINE_EMAIL }}
-          CYPRESS_AIRLINE_PASSWORD: ${{ secrets.AIRLINE_PASSWORD }}
+          # Selected environment
+          CYPRESS_ENVIRONMENT: ${{ github.event.inputs.environment }}
+
+          # DEV credentials
+          FORWARDER_EMAIL_DEV: ${{ secrets.FORWARDER_EMAIL_DEV }}
+          FORWARDER_PASSWORD_DEV: ${{ secrets.FORWARDER_PASSWORD_DEV }}
+          AIRLINE_EMAIL_DEV: ${{ secrets.AIRLINE_EMAIL_DEV }}
+          AIRLINE_PASSWORD_DEV: ${{ secrets.AIRLINE_PASSWORD_DEV }}
+
+          # STG credentials
+          FORWARDER_EMAIL_STG: ${{ secrets.FORWARDER_EMAIL_STG }}
+          FORWARDER_PASSWORD_STG: ${{ secrets.FORWARDER_PASSWORD_STG }}
+          AIRLINE_EMAIL_STG: ${{ secrets.AIRLINE_EMAIL_STG }}
+          AIRLINE_PASSWORD_STG: ${{ secrets.AIRLINE_PASSWORD_STG }}
+
+          # Viewport
           CYPRESS_VIEWPORT_WIDTH: 1920
           CYPRESS_VIEWPORT_HEIGHT: 1080
         run: npm run cypress:run:allure:ci

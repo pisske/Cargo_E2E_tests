@@ -22,7 +22,7 @@ describe("Forwarder Booking Flow", () => {
     QuoteForShipper.clickCreateQuoteButton();
     cy.url({ timeout: 10000 }).should("include", "/forwarder/quote/create");
     QuoteForShipper.selectFirstOptionFromShipper();
-    // QuoteForShipper.fillCustomerDetails("Jphm", "Johndow@gmail.com");
+
     QuoteForShipper.clickNextButton();
     QuoteForShipper.clickNextButtonStepTwo();
     QuoteForShipper.selectIncotern();

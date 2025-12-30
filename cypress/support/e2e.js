@@ -26,6 +26,8 @@ import "cypress-real-events";
 // cypress/support/e2e.js
 // cypress/support/e2e.js
 // cypress/support/e2e.js
+// 📘 cypress/support/e2e.js
+
 Cypress.on("uncaught:exception", (err, runnable) => {
   const msg = err?.message || "";
 

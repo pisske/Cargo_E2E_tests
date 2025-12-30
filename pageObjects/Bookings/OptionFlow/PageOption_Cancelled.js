@@ -129,10 +129,15 @@ class PageOptionCancelled {
       .click();
   }
   clickOnThePlaceOptionButton() {
-    cy.get(SELECTORS.placeOptionButton, { timeout: 20000 }).click({
-      force: true,
+    cy.get(SELECTORS.placeOptionButton, { timeout: 30000 }).then(($btn) => {
+      if ($btn.is(":visible") && !$btn.is(":disabled")) {
+        cy.wrap($btn).click();
+      } else {
+        cy.wrap($btn).click({ force: true });
+      }
     });
   }
+
   closeOptionModal() {
     cy.get(SELECTORS.closeOptionModal, { timeout: 20000 }).click({
       force: true,

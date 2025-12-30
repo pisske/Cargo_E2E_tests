@@ -31,21 +31,7 @@ class QuoteForShipper {
       force: true,
     });
   }
-  //   fillCustomerDetails(name, email) {
-  //     // Scroll to and type Name
-  //     cy.get("#customer-name-input")
-  //       .scrollIntoView() // ensures element is in viewport
-  //       .should("be.visible")
-  //       .clear({ force: true })
-  //       .type(name, { force: true });
 
-  //     // Scroll to and type Email
-  //     cy.get("#customer-email-input")
-  //       .scrollIntoView() // ensures element is in viewport
-  //       .should("be.visible")
-  //       .clear({ force: true })
-  //       .type(email, { force: true });
-  //   }
   selectFirstOptionFromShipper() {
     const customerDropdown = "#email-select-dropdown";
 
@@ -61,12 +47,11 @@ class QuoteForShipper {
     cy.get(customerDropdown).scrollIntoView().click().type("{downarrow}");
     cy.log("✅ Dropdown opened");
 
-    //   // 4️⃣ Click first option
-    //   cy.get(".cdk-overlay-pane mat-option", { timeout: 20000 })
-    //     .first()
-    //     .click({ force: true });
-    //   cy.log("✅ First option selected");
-    // }
+    // // 4️⃣ Click first option
+    // cy.get(".cdk-overlay-pane mat-option", { timeout: 20000 })
+    //   .first()
+    //   .click({ force: true });
+    // cy.log("✅ First option selected");
   }
   clickNextButton() {
     cy.get(SELECTORS.nextButton, { timeout: 50000 }).click();
@@ -88,26 +73,39 @@ class QuoteForShipper {
     cy.log("✅ First option selected");
   }
   clickNextButtonStepFour() {
-    cy.get("button[class='btn next-step']", { timeout: 50000 }).click();
+    cy.contains("button.btn.next-step", "Next", { timeout: 50000 })
+      .scrollIntoView() // scroll to make it visible
+      .should("be.visible") // ensure it's visible
+      .click();
   }
   clickGenerateQuoteAndVerifyPDF() {
-    // 1️⃣ Stub window.open
-    cy.window().then((win) => {
-      cy.stub(win, "open").as("pdfWindow");
+    let pdfUrl;
+
+    // ✅ 1️⃣ Set up listener BEFORE clicking
+    cy.on("window:open", (url) => {
+      pdfUrl = url;
+      cy.log(`📄 PDF URL captured: ${url}`);
     });
 
-    // 2️⃣ Click the Generate Quote button
-    cy.get(SELECTORS.generateQuoteButton, { timeout: 50000 }).click();
+    // ✅ 2️⃣ Click Generate Quote
+    cy.get(SELECTORS.generateQuoteButton, { timeout: 50000 })
+      .scrollIntoView()
+      .should("be.visible")
+      .click();
     cy.log("✅ Generate Quote button clicked");
 
-    // 3️⃣ Check the stub was called
-    cy.get("@pdfWindow")
-      .should("have.been.called")
-      .then((stub) => {
-        const pdfUrl = stub.getCall(0).args[0]; // URL of PDF
-        cy.log(`📄 PDF URL captured: ${pdfUrl}`);
+    // ✅ 3️⃣ Wait for redirect to complete
+    cy.url({ timeout: 60000 }).should(
+      "include",
+      "/forwarder/quote/shipper-quote"
+    );
 
-        // 4️⃣ Make a direct request to verify it's a PDF
+    // ✅ 4️⃣ Retry until pdfUrl is captured
+    cy.wrap(null)
+      .should(() => {
+        expect(pdfUrl, "PDF window should have opened").to.be.a("string");
+      })
+      .then(() => {
         cy.request({
           url: pdfUrl,
           encoding: "binary",

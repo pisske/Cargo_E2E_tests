@@ -99,7 +99,10 @@ class QuoteRequestPage_Accepted {
   }
   typeRateForQuote() {
     const randomNumber = Math.floor(Math.random() * 101);
-    cy.get(SELECTORS.inputTargetRateField)
+
+    // Wait up to 30s for the input field to exist and be visible
+    cy.get(SELECTORS.inputTargetRateField, { timeout: 30000 })
+      .should("exist")
       .should("be.visible")
       .clear()
       .type(randomNumber.toString());

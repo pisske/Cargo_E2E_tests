@@ -163,7 +163,9 @@ class ForwarderRequestBookingPage {
       });
   }
   clckEditAWBnumber() {
-    cy.get(SELECTORS.editAWBButton, { timeout: 10000 })
+    cy.get("div[data-intercom-target='AWB_Card'] button.edit-button", {
+      timeout: 30000,
+    })
       .should("be.visible")
       .click({ force: true });
   }

@@ -24,9 +24,44 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+// Cypress.Commands.add("loginAsForwarder", () => {
+//   const email = Cypress.env("FORWARDER_EMAIL");
+//   const password = Cypress.env("FORWARDER_PASSWORD");
+//   cy.session([email, password, "forwarder"], () => {
+//     cy.visit("/forwarder/login");
+//     cy.get("#login-email-input").type(email);
+//     cy.get("#login-password-input").type(password);
+//     cy.get("#login_signin_submit").click();
+//     cy.url({ timeout: 15000 }).should(
+//       "include",
+//       "/forwarder/search/forwarder-search"
+//     );
+//   });
+//   cy.visit("/forwarder/search/forwarder-search");
+// });
+
+// Cypress.Commands.add("loginAsAirline", () => {
+//   const email = Cypress.env("AIRLINE_EMAIL");
+//   const password = Cypress.env("AIRLINE_PASSWORD");
+//   cy.session([email, password, "airline"], () => {
+//     cy.visit("/airline/login");
+//     cy.get("#login-email-input").type(email);
+//     cy.get("#login-password-input").type(password);
+//     cy.get("#login_signin_submit").click();
+//     cy.url({ timeout: 10000 }).should("include", "/airline/quote/quote-list");
+//   });
+//   cy.visit("/airline/quote/quote-list");
+// });
 Cypress.Commands.add("loginAsForwarder", () => {
   const email = Cypress.env("FORWARDER_EMAIL");
   const password = Cypress.env("FORWARDER_PASSWORD");
+
+  if (!email || !password) {
+    throw new Error(
+      `Forwarder credentials are missing for env: ${Cypress.env("ENVIRONMENT")}`
+    );
+  }
+
   cy.session([email, password, "forwarder"], () => {
     cy.visit("/forwarder/login");
     cy.get("#login-email-input").type(email);
@@ -37,12 +72,20 @@ Cypress.Commands.add("loginAsForwarder", () => {
       "/forwarder/search/forwarder-search"
     );
   });
+
   cy.visit("/forwarder/search/forwarder-search");
 });
 
 Cypress.Commands.add("loginAsAirline", () => {
   const email = Cypress.env("AIRLINE_EMAIL");
   const password = Cypress.env("AIRLINE_PASSWORD");
+
+  if (!email || !password) {
+    throw new Error(
+      `Airline credentials are missing for env: ${Cypress.env("ENVIRONMENT")}`
+    );
+  }
+
   cy.session([email, password, "airline"], () => {
     cy.visit("/airline/login");
     cy.get("#login-email-input").type(email);
@@ -50,5 +93,6 @@ Cypress.Commands.add("loginAsAirline", () => {
     cy.get("#login_signin_submit").click();
     cy.url({ timeout: 10000 }).should("include", "/airline/quote/quote-list");
   });
+
   cy.visit("/airline/quote/quote-list");
 });

@@ -175,49 +175,80 @@ class PageOptionConfirmed {
       force: true,
     });
   }
+  // verifyShipmentStatus() {
+  //   const expectedStatuses = [
+  //     "BOOKING CONFIRMED", // First check: Booking Confirmed
+  //     "IN TRANSIT", // Second check: In Transit
+  //     "AT DESTINATION", // Third check: At Destination
+  //     "DELIVERED", // Last check: Delivered
+  //   ];
+
+  //   const normalizeText = (text) =>
+  //     text.replace(/\s+/g, " ").trim().toUpperCase();
+
+  //   expectedStatuses.forEach((expectedStatus, index) => {
+  //     cy.log(`⏳ Waiting for status: ${expectedStatus}`);
+
+  //     // Increase the timeout for the first status check (Booking Confirmed to In Transit)
+  //     let statusTimeout = 90000; // 90 seconds for the first transition (Booking Confirmed → In Transit)
+
+  //     if (expectedStatus !== "BOOKING CONFIRMED") {
+  //       statusTimeout = 60000; // 60 seconds for other transitions (In Transit → At Destination → Delivered)
+  //     }
+
+  //     // Wait for the status to appear with the appropriate timeout
+  //     cy.get("span[placement='bottom'] span.text-uppercase", {
+  //       timeout: statusTimeout,
+  //     })
+  //       .should("be.visible")
+  //       .scrollIntoView({ force: true })
+  //       .invoke("text")
+  //       .should("match", new RegExp(expectedStatus, "i")) // Ensure it matches the expected status
+  //       .then((text) => {
+  //         const actual = normalizeText(text);
+  //         const expected = normalizeText(expectedStatus);
+
+  //         // Assert that the status matches
+  //         expect(actual).to.eq(expected);
+  //         cy.log(`✅ Status matched: ${actual}`);
+  //       });
+
+  //     // Optional: Add a wait time before checking the next status (for transitions to occur)
+  //     if (index < expectedStatuses.length - 1) {
+  //       // Avoid waiting after the last status
+  //       cy.wait(90000); // Wait for 90 seconds (adjust based on your transition time)
+  //     }
+  //   });
+  // }
+
   verifyShipmentStatus() {
     const expectedStatuses = [
-      "BOOKING CONFIRMED", // First check: Booking Confirmed
-      "IN TRANSIT", // Second check: In Transit
-      "AT DESTINATION", // Third check: At Destination
-      "DELIVERED", // Last check: Delivered
+      "BOOKING CONFIRMED",
+      "IN TRANSIT",
+      "AT DESTINATION",
+      "DELIVERED",
     ];
 
     const normalizeText = (text) =>
       text.replace(/\s+/g, " ").trim().toUpperCase();
 
-    expectedStatuses.forEach((expectedStatus, index) => {
+    expectedStatuses.forEach((expectedStatus) => {
       cy.log(`⏳ Waiting for status: ${expectedStatus}`);
 
-      // Increase the timeout for the first status check (Booking Confirmed to In Transit)
-      let statusTimeout = 90000; // 90 seconds for the first transition (Booking Confirmed → In Transit)
-
-      if (expectedStatus !== "BOOKING CONFIRMED") {
-        statusTimeout = 60000; // 60 seconds for other transitions (In Transit → At Destination → Delivered)
-      }
-
-      // Wait for the status to appear with the appropriate timeout
+      // Poll for the expected status with extended timeout
       cy.get("span[placement='bottom'] span.text-uppercase", {
-        timeout: statusTimeout,
-      })
-        .should("be.visible")
-        .scrollIntoView({ force: true })
-        .invoke("text")
-        .should("match", new RegExp(expectedStatus, "i")) // Ensure it matches the expected status
-        .then((text) => {
-          const actual = normalizeText(text);
-          const expected = normalizeText(expectedStatus);
+        timeout: 240000,
+      }).should(($el) => {
+        const actual = normalizeText($el.text());
+        if (actual !== normalizeText(expectedStatus)) {
+          // Throw error to retry until timeout
+          throw new Error(
+            `Status is "${actual}" but expected "${expectedStatus}"`
+          );
+        }
+      });
 
-          // Assert that the status matches
-          expect(actual).to.eq(expected);
-          cy.log(`✅ Status matched: ${actual}`);
-        });
-
-      // Optional: Add a wait time before checking the next status (for transitions to occur)
-      if (index < expectedStatuses.length - 1) {
-        // Avoid waiting after the last status
-        cy.wait(90000); // Wait for 90 seconds (adjust based on your transition time)
-      }
+      cy.log(`✅ Status matched: ${expectedStatus}`);
     });
   }
 }

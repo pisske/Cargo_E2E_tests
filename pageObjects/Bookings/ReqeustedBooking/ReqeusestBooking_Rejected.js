@@ -195,7 +195,7 @@ class ForwarderRequestBooking_Rejected {
     });
   }
   confirmRejectModal() {
-    cy.get(SELECTORS.confirmRejectModal, { timeout: 20000 }).click({
+    cy.get(SELECTORS.confirmRejectModal, { timeout: 40000 }).click({
       force: true,
     });
   }

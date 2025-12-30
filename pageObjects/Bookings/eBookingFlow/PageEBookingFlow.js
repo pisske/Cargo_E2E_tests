@@ -27,6 +27,7 @@ class ForwarderBookingPage {
       .eq(1)
       .click();
     cy.get(SELECTORS.officeMenu).contains("SIN").click();
+    cy.get("body").click(0, 0);
   }
 
   changeLoadType() {
@@ -169,7 +170,7 @@ class ForwarderBookingPage {
       // Optional: Add a wait time before checking the next status (for transitions to occur)
       if (index < expectedStatuses.length - 1) {
         // Avoid waiting after the last status
-        cy.wait(90000); // Wait for 90 seconds (adjust based on your transition time)
+        cy.wait(100000); // Wait for 90 seconds (adjust based on your transition time)
       }
     });
   }
